@@ -21,6 +21,7 @@
       {
         "duplicate-id-active": "off"
       }
-    ]
+    ],
+    "typescript-config/consistent-casing": "off"
   }
 }
