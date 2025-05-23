@@ -1,5 +1,5 @@
-import Footer from "@/components/footer"
-import Navbar from "@/components/navbar"
+import FooterLogin from "@/components/footerLogin"
+import NavbarLogin from "@/components/navbarLogin"
 import React from "react"
 
 
@@ -16,9 +16,9 @@ type PropsLayout = {
 const RootLayout = ({ children }: PropsLayout) => {
     return (
         <div>
-            <Navbar/>
+            <NavbarLogin/>
             {children}
-            <Footer/>
+            <FooterLogin/>
         </div>
     )
 }
