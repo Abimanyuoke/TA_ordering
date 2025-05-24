@@ -1,4 +1,4 @@
-export interface IToko {
+export interface IMenu {
     id: number,
     uuid: string,
     name: string,
