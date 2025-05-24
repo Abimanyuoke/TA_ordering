@@ -23,10 +23,10 @@ export default function Navbar() {
                 </nav>
 
                 <div className="flex gap-4">
-                    <button className="w-32 cursor-pointer border font-bold bg-white border-[#2E8B57] text-[#2E8B57] px-4 py-2 rounded-lg hover:bg-green-50 transition" onClick={() => router.push("/SignUp")}>
+                    <button className="w-32 cursor-pointer border font-bold bg-white border-[#2E8B57] text-[#2E8B57] px-4 py-2 rounded-lg hover:bg-green-50 transition" onClick={() => router.push("/signUp")}>
                         Sign Up
                     </button>
-                    <button className="w-32 bg-[#2E8B57] cursor-pointer font-bold text-white px-4 py-2 rounded-lg hover:bg-[#276f48] transition" onClick={() => router.push("/SignIn")}>
+                    <button className="w-32 bg-[#2E8B57] cursor-pointer font-bold text-white px-4 py-2 rounded-lg hover:bg-[#276f48] transition" onClick={() => router.push("/signIn")}>
                         Sign In
                     </button>
                 </div>

@@ -36,7 +36,7 @@ const FileInput = (props: Props) => {
     }
 
     return (
-        <div className="w-full gap-1 my-2 mt-3">
+        <div className="w-full gap-1 my-2">
             <strong className="text-xs font-bold text-slate-500">{props.label}</strong>
             <input type={`file`}
                 className={`text-sm w-full rounded-md p-2 bg-slate-50 border border-slate-500 focus:border-slate-500 focus:outline-none ${props.className}`}

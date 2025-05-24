@@ -15,7 +15,7 @@ type PropsLayout = {
 
 const RootLayout = ({ children }: PropsLayout) => {
     return (
-        <div>
+        <div className="overflow-x-hidden">
             <Navbar/>
             {children}
             <Footer/>

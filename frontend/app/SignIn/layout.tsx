@@ -2,6 +2,7 @@ import Footer from "@/components/footer"
 import FooterLogin from "@/components/footerLogin"
 import NavbarLogin from "@/components/navbarLogin"
 import React from "react"
+import { Toaster } from "sonner"
 
 
 
@@ -16,7 +17,8 @@ type PropsLayout = {
 
 const RootLayout = ({ children }: PropsLayout) => {
     return (
-        <div>
+        <div className="overflow-x-hidden">
+            <Toaster position="top-right" richColors/>
             <NavbarLogin/>
             {children}
             <FooterLogin/>

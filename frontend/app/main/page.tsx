@@ -6,13 +6,13 @@ import imgLogo from "@/public/image/img - logo.png"
 
 export default function LandingPage() {
     return (
-        <div className="bg-white min-h-screen font-inter"> 
+        <div className="bg-white min-h-screen font-inter overflow-x-hidden"> 
             <section className="grid md:grid-cols-2 gap-8 p-10 h-[640px] items-center bg-white">
                 <div>
                     <h1 className="text-6xl font-extrabold text-[#333333] mb-4 leading-16">
                         Plant, Nurture, and <br /> Be Happy with the <br /> Plants of Your Choice
                     </h1>
-                    <p className="text-[#333333] mb-6 ">
+                    <p className="text-[#333333] mb-6 text-[15px]">
                         Some people still have limited knowledge in caring for plants, even
                         though plants play an important role in creating a healthy
                         environment. Plantify comes as a solution by providing information,

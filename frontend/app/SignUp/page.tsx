@@ -1,16 +1,67 @@
-import React from "react";
+"use client"
+
+import React, { FormEvent, useState } from "react";
 import Image from "next/image";
-import iconUser from "@/public/image/icon - user.png";
-import iconEmail from "@/public/image/icon - mail.png";
 import iconPass from "@/public/image/icon - password.png";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { BASE_API_URL } from "@/global";
+import { getCookies } from "@/lib/client-cookies";
+import { IUser } from "@/types";
+import { post } from "@/lib/bridge";
+import { MdOutlineEmail } from "react-icons/md";
+import { InputGroupComponent } from "@/components/InputComponent"
+import FileInput from "@/components/fileInput"
+import { LuUserRound } from "react-icons/lu";
+import { GiPadlock } from "react-icons/gi";
+
 
 export default function SignUp() {
+
+
+    const [user, setUser] = useState<IUser>({
+        id: 0, uuid: ``, name: ``, email: ``,
+        password: ``, profile_picture: ``, role: `USER`, createdAt: ``, updatedAt: ``
+    })
+    const router = useRouter()
+    const TOKEN = getCookies("token") || ""
+    const [file, setFile] = useState<File | null>(null)
+
+    const handleSubmit = async (e: FormEvent) => {
+        try {
+            e.preventDefault()
+            const url = `${BASE_API_URL}/user`
+            const { name, email, password, role } = user
+            const payload = new FormData()
+            payload.append("name", name || "")
+            payload.append("email", email || "")
+            payload.append("password", password || "")
+            payload.append("role", role || "USER")
+            if (file !== null) payload.append("profile_picture", file)
+
+            const response = await post(url, payload, TOKEN)
+            const data = response as { status: boolean; message: string }
+
+            if (data.status) {
+                toast.success("Your account has been created, please login")
+                setTimeout(() => {
+                    router.replace(`/login`)
+                }, 2000)
+            } else {
+                toast.warning("Your password or email is wrong", { duration: 2000 })
+            }
+        } catch (error) {
+            console.error(error)
+            toast.error(`Something went wrong`, { duration: 2000 })
+        }
+    }
+
     return (
         <div className="bg-[#333333] min-h-screen flex items-center justify-center px-8 pr-20 py-12">
             <div className="flex flex-row w-full max-w-6xl items-center justify-between gap-12">
 
                 <div className="text-white flex-1">
-                    <h2 className="text-5xl font-bold leading-snug">
+                    <h2 className="text-5xl font-extrabold leading-tight">
                         Take <span className="text-[#90EE90]">Better Care</span> of{" "}
                         <span className="text-[#FAFAD2]">Your <br /> Plants</span> with{" "}
                         <span className="text-[#2E8B57]">Plantify</span>
@@ -28,42 +79,44 @@ export default function SignUp() {
 
                 <div className="bg-[#FCFCFC] shadow-lg rounded-xl p-6 w-80 max-w-sm">
                     <div className="flex justify-between mb-4 gap-2">
-                        <button className="w-32 text-sm font-semibold text-[#2E8B57] border border-[#2E8B57] rounded px-3 py-1 hover:bg-[#2E8B57]/10 transition">
-                            <a href="/signIn">Sign In</a>
+                        <button className="w-32 text-sm cursor-pointer font-semibold text-[#2E8B57] border border-[#2E8B57] rounded px-3 py-1 hover:bg-[#2E8B57]/10 transition" onClick={() => router.push("/signIn")}>
+                            Sign In
                         </button>
-                        <button className="w-32 text-sm font-bold text-white bg-[#2E8B57] border border-[#2E8B57] px-3 py-1 rounded hover:bg-[#256d47] transition">
-                            <a href="/signUp">Sign Up</a>
+                        <button className="w-32 text-sm font-bold cursor-pointer text-white bg-[#2E8B57] border border-[#2E8B57] px-3 py-1 rounded hover:bg-[#256d47] transition" onClick={() => router.push("/signUp")}>
+                            Sign Up
                         </button>
                     </div>
 
-                    <form className="flex flex-col pt-5 gap-3">
-                        <div className="relative">
-                            <Image
-                                src={iconUser} alt="User Icon" width={18} height={18} className="opacity-50 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                            <input
-                                type="text" placeholder="Name" className="pl-10 text-[#8390A2] border border-[#2E8B57] rounded px-3 py-2 text-sm w-full" />
+                    <form className="flex flex-col pt-5 text-[#8390A2] " onSubmit={handleSubmit}>
+                        <div className="relative flex w-full items-center">
+                            <div className="p-3 top-6 absolute text-[#8390A2]">
+                                <LuUserRound className=" text-lg" />
+                            </div>
+                            <InputGroupComponent id={`name`} type="text" value={user.name}
+                                onChange={val => setUser({ ...user, name: val })}
+                                required={true} label="Name" placeholder="Name" className="pl-9" />
                         </div>
 
-                        <div className="relative">
-                            <Image
-                                src={iconEmail} alt="Email Icon" width={18} height={18} className="opacity-50 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                            <input
-                                type="email" placeholder="Email" className="pl-10 text-[#8390A2] border border-[#2E8B57] rounded px-3 py-2 text-sm w-full" />
+                        <div className="relative flex w-full items-center">
+                            <div className="p-3 top-[26px] absolute text-[#8390A2]">
+                                <MdOutlineEmail className=" text-lg" />
+                            </div>
+                            <InputGroupComponent id={`email`} type="text" value={user.email}
+                                onChange={val => setUser({ ...user, email: val })}
+                                required={true} label="Email" placeholder="Email" className="pl-9" />
                         </div>
 
-                        <div className="relative">
-                            <Image
-                                src={iconPass} alt="Password Icon" width={18} height={18} className="opacity-50 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                            <input
-                                type="password" placeholder="Password" className="pl-10 text-[#8390A2] border border-[#2E8B57] rounded px-3 py-2 text-sm w-full" />
+                        <div className="relative flex w-full items-center">
+                            <div className="p-3 top-[26px] absolute text-[#8390A2]">
+                                <GiPadlock className=" text-lg" />
+                            </div>
+                            <InputGroupComponent id={`password`} type="text" value={user.password}
+                                onChange={val => setUser({ ...user, password: val })}
+                                required={true} label="Password" placeholder="Password" className="pl-9"/>
                         </div>
 
-                        <div className="relative">
-                            <Image
-                                src={iconPass} alt="Password Icon" width={18} height={18} className="opacity-50 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                            <input
-                                type="password" placeholder="Password Confirmation" className="pl-10 text-[#8390A2] border border-[#2E8B57] rounded px-3 py-2 text-sm w-full" />
-                        </div>
+                            <FileInput acceptTypes={["application/pdf", "image/png", "image/jpeg", "image/jpg"]} id="profile_picture"
+                                label="Upload Picture" onChange={f => setFile(f)} required={false} />
 
                         <button
                             type="submit" className="mt-3 bg-[#2E8B57] text-white py-2 rounded font-bold">
