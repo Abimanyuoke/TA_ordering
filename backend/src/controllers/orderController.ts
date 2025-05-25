@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
-export const getAllOrders = async (request: Request, response: Response) => {
+export const getAllOrders = async (request: Request, response: Response): Promise<void> => {
     try {
         /** get requested data (data has been sent from request) */
         const { search } = request.query
@@ -13,7 +13,6 @@ export const getAllOrders = async (request: Request, response: Response) => {
             where: {
                 OR: [
                     { customer: { contains: search?.toString() || "" } },
-                    { table_number: { contains: search?.toString() || "" } }
                 ]
             },
             orderBy: { createdAt: "desc" }, /** sort by descending order date */
@@ -24,13 +23,13 @@ export const getAllOrders = async (request: Request, response: Response) => {
                 }
             }
         })
-        return response.json({
+        response.json({
             status: true,
             data: allOrders,
             message: `Order list has retrieved`
         }).status(200)
     } catch (error) {
-        return response
+        response
             .json({
                 status: false,
                 message: `There is an error. ${error}`
@@ -39,126 +38,140 @@ export const getAllOrders = async (request: Request, response: Response) => {
     }
 }
 
-export const createOrder = async (request: Request, response: Response) => {
+export const createOrder = async (request: Request, response: Response): Promise<void> => {
     try {
-        /** get requested data (data has been sent from request) */
-        const { customer, payment_method, status, orderlists } = request.body
-        const user = request.body.user
-        const uuid = uuidv4()
-        /** 
-         * assume that "orderlists" is an array of object that has keys:
-         * menuId, quantity, note
-         * */
+        const { customer, payment_method, status, orderlists } = request.body;
+        const user = request.body.user;
+        const uuid = uuidv4();
 
-        /** loop details of order to check menu and count the total price */
-        let total_price = 0
+        let total_price = 0;
         for (let index = 0; index < orderlists.length; index++) {
-            const { menuId } = orderlists[index]
+            const { menuId } = orderlists[index];
             const detailMenu = await prisma.menu.findFirst({
-                where: {
-                    id: menuId
-                }
-            })
-            if (!detailMenu) return response
-            .status(200).json({ status: false, message: `Menu with id ${menuId} is not found` })
-            total_price += (detailMenu.price *  orderlists[index].quantity)
+                where: { id: menuId }
+            });
+            
+            if (!detailMenu) {
+                response.status(404).json({ 
+                    status: false, 
+                    message: `Menu with id ${menuId} is not found` 
+                });
+                return;
+            }
+            
+            total_price += (detailMenu.price * orderlists[index].quantity);
         }
 
-        /** process to save new order */
         const newOrder = await prisma.order.create({
-            data: { uuid, customer, total_price, payment_method, status, userId: user.id }
-        })
+            data: { 
+                uuid, 
+                customer, 
+                total_price, 
+                payment_method, 
+                status, 
+                userId: user.id 
+            }
+        });
 
-        /** loop details of Order to save in database */
         for (let index = 0; index < orderlists.length; index++) {
-            const uuid = uuidv4()
-            const { menuId, quantity, note } = orderlists[index]
+            const uuid = uuidv4();
+            const { menuId, quantity, note } = orderlists[index];
             await prisma.orderList.create({
                 data: {
-                    uuid, orderId: newOrder.id, menuId: Number(menuId), quantity: Number(quantity), note
+                    uuid, 
+                    orderId: newOrder.id, 
+                    menuId: Number(menuId), 
+                    quantity: Number(quantity), 
+                    note
                 }
-            })
+            });
         }
-        return response.json({
+
+        response.status(201).json({
             status: true,
             data: newOrder,
-            message: `New Order has created`
-        }).status(200)
+            message: "New order has been created"
+        });
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
+        response.status(400).json({
+            status: false,
+            message: `There is an error. ${error}`
+        });
     }
-}
+};
 
-export const updateStatusOrder = async (request: Request, response: Response) => {
+export const updateStatusOrder = async (request: Request, response: Response): Promise<void> => {
     try {
-        /** get id of order's id that sent in parameter of URL */
-        const { id } = request.params
-        /** get requested data (data has been sent from request) */
-        const { status } = request.body
-        const user = request.body.user
+        const { id } = request.params;
+        const { status } = request.body;
+        const user = request.body.user;
 
-        /** make sure that data is exists in database */
-        const findOrder = await prisma.order.findFirst({ where: { id: Number(id) } })
-        if (!findOrder) return response
-            .status(200)
-            .json({ status: false, message: `Order is not found` })
+        const findOrder = await prisma.order.findFirst({ 
+            where: { id: Number(id) } 
+        });
+        
+        if (!findOrder) {
+            response.status(404).json({ 
+                status: false, 
+                message: "Order is not found" 
+            });
+            return;
+        }
 
-        /** process to update menu's data */
         const updatedStatus = await prisma.order.update({
             data: {
                 status: status || findOrder.status,
                 userId: user.id ? user.id : findOrder.userId
             },
             where: { id: Number(id) }
-        })
+        });
 
-        return response.json({
+        response.status(200).json({
             status: true,
             data: updatedStatus,
-            message: `Order has updated`
-        }).status(200)
+            message: "Order status has been updated"
+        });
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
+        response.status(400).json({
+            status: false,
+            message: `There is an error. ${error}`
+        });
     }
-}
+};
 
-export const deleteOrder = async (request: Request, response: Response) => {
+export const deleteOrder = async (request: Request, response: Response): Promise<void> => {
     try {
-        /** get id of order's id that sent in parameter of URL */
-        const { id } = request.params
+        const { id } = request.params;
 
-        /** make sure that data is exists in database */
-        const findOrder = await prisma.order.findFirst({ where: { id: Number(id) } })
-        if (!findOrder) return response
-            .status(200)
-            .json({ status: false, message: `Order is not found` })
+        const findOrder = await prisma.order.findFirst({ 
+            where: { id: Number(id) } 
+        });
+        
+        if (!findOrder) {
+            response.status(404).json({ 
+                status: false, 
+                message: "Order is not found" 
+            });
+            return;
+        }
 
-        /** process to delete details of order */
-        let deleteOrderList = await prisma.orderList.deleteMany({ where: { orderId: Number(id) } })
-        /** process to delete of Order */
-        let deleteOrder = await prisma.order.delete({ where: { id: Number(id) } })
+        await prisma.orderList.deleteMany({ 
+            where: { orderId: Number(id) } 
+        });
+        
+        const deleteOrder = await prisma.order.delete({ 
+            where: { id: Number(id) } 
+        });
 
-        return response.json({
+        response.status(200).json({
             status: true,
             data: deleteOrder,
-            message: `Order has deleted`
-        }).status(200)
+            message: "Order has been deleted"
+        });
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
+        response.status(400).json({
+            status: false,
+            message: `There is an error. ${error}`
+        });
     }
-}
+};

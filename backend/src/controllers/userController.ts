@@ -6,11 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 import md5 from "md5";
 import { sign } from "jsonwebtoken";
 import jwt from "jsonwebtoken"
+import path from "path";
 
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
-export const getAllUsers = async (request: Request, response: Response) => {
+export const getAllUsers = async (request: Request, response: Response): Promise<void> => {
     try {
         /** get requested data (data has been sent from request) */
         const { search } = request.query
@@ -20,13 +21,13 @@ export const getAllUsers = async (request: Request, response: Response) => {
             where: { name: { contains: search?.toString() || "" } }
         })
 
-        return response.json({
+        response.json({
             status: true,
             data: allUser,
             message: `user has retrieved`
         }).status(200)
     } catch (error) {
-        return response
+        response
             .json({
                 status: false,
                 message: `There is an error. ${error}`
@@ -35,18 +36,18 @@ export const getAllUsers = async (request: Request, response: Response) => {
     }
 }
 
-export const getUserById = async (request: Request, response: Response) => {
+export const getUserById = async (request: Request, response: Response): Promise<void> => {
     try {
         /** get requested data (data has been sent from request) */
         const { id } = request.body.user
 
         if (!id) {
-            return response
-            .json({
-                status: false,
-                message: `User Not Found`
-            })
-            .status(400)
+            response
+                .json({
+                    status: false,
+                    message: `User Not Found`
+                })
+                .status(400)
         }
 
         /** process to get user, contains means search name of user based on sent keyword */
@@ -54,13 +55,13 @@ export const getUserById = async (request: Request, response: Response) => {
             where: { id: Number(id) }
         })
 
-        return response.json({
+        response.json({
             status: true,
             data: allUser,
             message: `user has retrieved`
         }).status(200)
     } catch (error) {
-        return response
+        response
             .json({
                 status: false,
                 message: `There is an error. ${error}`
@@ -99,7 +100,7 @@ export const getUserById = async (request: Request, response: Response) => {
 //     }
 // }
 
-export const createUser = async (request: Request, response: Response) => {
+export const createUser = async (request: Request, response: Response): Promis<void> => {
     try {
         const { name, email, password, role, alamat, telephone } = request.body
         const uuid = uuidv4()
@@ -156,175 +157,250 @@ export const createUser = async (request: Request, response: Response) => {
     }
 }
 
-export const updateUser = async (request: Request, response: Response) => {
+export const updateUser = async (request: Request, response: Response): Promise<void> => {
     try {
-        /** get id of user's id that sent in parameter of URL */
-        const { id } = request.params
-        /** get requested data (data has been sent from request) */
-        const { name, email, password, role, alamat, telephone } = request.body
+        const { id } = request.params;
+        const { name, email, password, role, alamat, telephone } = request.body;
 
-        /** make sure that data is exists in database */
-        const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
-        if (!findUser) return response
-            .status(200)
-            .json({ status: false, message: `user is not found` })
+        // Check if user exists
+        const findUser = await prisma.user.findFirst({
+            where: { id: Number(id) }
+        });
 
-        /** default value filename of saved data */
-        let filename = findUser.profile_picture
-        if (request.file) {
-            /** update filename by new uploaded picture */
-            filename = request.file.filename
-            /** check the old picture in the folder */
-            let path = `${BASE_URL}/../public/profile_picture/${findUser.profile_picture}`
-            let exists = fs.existsSync(path)
-            /** delete the old exists picture if reupload new file */
-            if(exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
+        if (!findUser) {
+            response.status(404).json({
+                status: false,
+                message: "User not found"
+            });
+            return;
         }
 
-        /** process to update user's data */
+        // Handle file upload if exists
+        let filename = findUser.profile_picture;
+        if (request.file) {
+            filename = request.file.filename;
+            const path = `${BASE_URL}/../public/profile_picture/${findUser.profile_picture}`;
+
+            // Delete old picture if it exists
+            if (fs.existsSync(path) && findUser.profile_picture) {
+                fs.unlinkSync(path);
+            }
+        }
+
+        // Update user data
         const updatedUser = await prisma.user.update({
             data: {
                 name: name || findUser.name,
                 email: email || findUser.email,
                 password: password ? md5(password) : findUser.password,
                 role: role || findUser.role,
-                profile_picture: filename, 
+                profile_picture: filename,
                 alamat: alamat || findUser.alamat,
                 telephone: telephone || findUser.telephone
             },
             where: { id: Number(id) }
-        })
+        });
 
-        return response.json({
+        response.status(200).json({
+            status: true,
+            data: {
+                id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                profile_picture: updatedUser.profile_picture,
+                alamat: updatedUser.alamat,
+                telephone: updatedUser.telephone,
+                // Exclude password from response
+            },
+            message: "User updated successfully"
+        });
+
+    } catch (error) {
+        console.error("Error updating user:", error);
+        response.status(500).json({
+            status: false,
+            message: "An error occurred while updating user"
+        });
+    }
+};
+
+export const changePicture = async (request: Request, response: Response): Promise<void> => {
+    try {
+        const { id } = request.params;
+
+        // Verify user exists
+        const user = await prisma.user.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if (!user) {
+            response.status(404).json({
+                status: false,
+                message: "User not found"
+            });
+            return;
+        }
+
+        // Check if file was uploaded
+        if (!request.file) {
+            response.status(400).json({
+                status: false,
+                message: "No image file provided"
+            });
+            return;
+        }
+
+        // Delete old picture if exists
+        if (user.profile_picture) {
+            const oldPath = path.join(BASE_URL, 'public', 'profile_picture', user.profile_picture);
+            if (fs.existsSync(oldPath)) {
+                fs.unlinkSync(oldPath);
+            }
+        }
+
+        // Update profile picture
+        const updatedUser = await prisma.user.update({
+            where: { id: Number(id) },
+            data: { profile_picture: request.file.filename },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                profile_picture: true,
+                role: true
+            }
+        });
+
+        response.status(200).json({
             status: true,
             data: updatedUser,
-            message: `user has updated`
-        }).status(200)
+            message: "Profile picture updated successfully"
+        });
+
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
-    }
-}
-
-export const changePicture = async (request: Request, response: Response) => {
-    try {
-        /** get id of menu's id that sent in parameter of URL */
-        const { id } = request.params
-
-        /** make sure that data is exists in database */
-        const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
-        if (!findUser) return response
-            .status(200)
-            .json({ status: false, message: `User is not found` })
+        console.error('Error changing profile picture:', error);
         
-        /** default value filename of saved data */
-        let filename = findUser.profile_picture
+        // Clean up uploaded file if error occurred
         if (request.file) {
-            /** update filename by new uploaded picture */
-            filename = request.file.filename
-            /** check the old picture in the folder */
-            let path = `${BASE_URL}/../public/profile_picture/${findUser.profile_picture}`
-            let exists = fs.existsSync(path)
-            /** delete the old exists picture if reupload new file */
-            if(exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
+            const newPath = path.join(BASE_URL, 'public', 'profile_picture', request.file.filename);
+            if (fs.existsSync(newPath)) {
+                fs.unlinkSync(newPath);
+            }
         }
-        
-        /** process to update picture in database */
-        const updatePicture = await prisma.user.update({
-            data: { profile_picture: filename },
-            where: { id: Number(id) }
-        })
 
-        return response.json({
-            status: true,
-            data: updatePicture,
-            message: `Picture has changed`
-        }).status(200)
-    } catch (error) {
-        return response.json({
+        response.status(500).json({
             status: false,
-            message: `There is an error. ${error}`
-        }).status(400)
+            message: "Failed to update profile picture"
+        });
     }
-}
+};
 
-export const deleteUser = async (request: Request, response: Response) => {
+export const deleteUser = async (request: Request, response: Response): Promise<void> => {
     try {
-        /** get id of user's id that sent in parameter of URL */
-        const { id } = request.params
-        /** make sure that data is exists in database */
-        const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
-        if (!findUser) return response
-            .status(200)
-            .json({ status: false, message: `user is not found` })
+        const { id } = request.params;
 
-        /** prepare to delete file of deleted user's data */
-        let path = `${BASE_URL}/public/profile_picture/${findUser.profile_picture}` /** define path (address) of file location */
-        let exists = fs.existsSync(path)
-        if (exists && findUser.profile_picture !== ``) fs.unlinkSync(path) /** if file exist, then will be delete */
-
-        /** process to delete user's data */
-        const deleteduser = await prisma.user.delete({
+        // Verify user exists
+        const user = await prisma.user.findUnique({
             where: { id: Number(id) }
-        })
-        return response.json({
-            status: true,
-            data: deleteduser,
-            message: `user has deleted`
-        }).status(200)
-    } catch (error) {
-        return response
-            .json({
+        });
+
+        if (!user) {
+            response.status(404).json({
                 status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
-    }
-}
-
-export const authentication = async (request: Request, response: Response) => {
-    try {
-        const { email, password } = request.body /** get requested data (data has been sent from request) */
-
-        /** find a valid admin based on username and password */
-        const findUser = await prisma.user.findFirst({
-            where: { email, password: md5(password) }
-        })
-
-        /** check is admin exists */
-        if (!findUser) return response
-            .status(200)
-            .json({ status: false, logged: false, message: `Email or password is invalid` })
-
-        let data = {
-            id: findUser.id,
-            name: findUser.name,
-            email: findUser.email,
-            role: findUser.role,
-            profile_picture: findUser.profile_picture,
-            alamat: findUser.alamat,
-            telephone: findUser.telephone,
+                message: "User not found"
+            });
+            return;
         }
 
-        /** define payload to generate token */
-        let payload = JSON.stringify(data)
+        // Delete profile picture if exists
+        if (user.profile_picture) {
+            const filePath = path.join(BASE_URL, 'public', 'profile_picture', user.profile_picture);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
 
-        /** generate token */
-        let token = sign(payload, SECRET || "joss")
+        // Delete user from database
+        await prisma.user.delete({
+            where: { id: Number(id) }
+        });
 
-        return response
-            .status(200)
-            .json({ status: true, logged: true, data: data, message: `Login Success`, token })
+        response.status(200).json({
+            status: true,
+            message: "User deleted successfully"
+        });
+
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
+        console.error('Error deleting user:', error);
+        response.status(500).json({
+            status: false,
+            message: "Failed to delete user"
+        });
     }
-}
+};
+
+export const authentication = async (request: Request, response: Response): Promise<void> => {
+    try {
+        const { email, password } = request.body;
+
+        // Input validation
+        if (!email || !password) {
+            response.status(400).json({
+                status: false,
+                message: "Email and password are required"
+            });
+            return;
+        }
+
+        // Find user with hashed password
+        const user = await prisma.user.findFirst({
+            where: { 
+                email,
+                password: md5(password) 
+            }
+        });
+
+        if (!user) {
+            response.status(401).json({
+                status: false,
+                logged: false,
+                message: "Invalid email or password"
+            });
+            return;
+        }
+
+        // Prepare user data without sensitive information
+        const userData = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            profile_picture: user.profile_picture,
+            alamat: user.alamat,
+            telephone: user.telephone
+        };
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { userId: user.id, role: user.role },
+            process.env.SECRET || 'your-secret-key',
+            { expiresIn: '1h' }
+        );
+
+        response.status(200).json({
+            status: true,
+            logged: true,
+            data: userData,
+            token,
+            message: "Login successful"
+        });
+
+    } catch (error) {
+        console.error('Authentication error:', error);
+        response.status(500).json({
+            status: false,
+            message: "Authentication failed"
+        });
+    }
+};

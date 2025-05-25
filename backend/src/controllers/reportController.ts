@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
-export const getDashboard = async (request: Request, response: Response) => {
+export const getDashboard = async (request: Request, response: Response): Promise<void> => {
     try {
         /** process to get order, contains means search name or table number of customer's order based on sent keyword */
         const allUsers = await prisma.user.findMany()
@@ -18,7 +18,7 @@ export const getDashboard = async (request: Request, response: Response) => {
         const doneOrders = await prisma.order.findMany({
             where: {status:  'DONE'},
         })
-        return response.json({
+        response.json({
             status: true,
             data: {
                 allUser: allUsers.length,
@@ -29,7 +29,7 @@ export const getDashboard = async (request: Request, response: Response) => {
             message: `Order list has retrieved`
         }).status(200)
     } catch (error) {
-        return response
+        response
             .json({
                 status: false,
                 message: `There is an error. ${error}`
@@ -38,7 +38,7 @@ export const getDashboard = async (request: Request, response: Response) => {
     }
 }
 
-export const getFavourite = async (request: Request, response: Response) => {
+export const getFavourite = async (request: Request, response: Response): Promise<void> => {
     try {
         // Mengambil semua order list yang ada
         const orderLists = await prisma.orderList.findMany({
@@ -51,7 +51,7 @@ export const getFavourite = async (request: Request, response: Response) => {
         const menuCount: { [key: string]: number } = {};
 
         // Menghitung jumlah pemesanan untuk setiap menu
-        orderLists.forEach((orderList: { Menu: { name: any; }; quantity: number; }) => {
+        orderLists.forEach((orderList) => {
             const menuName = orderList.Menu?.name; // Nama menu
             if (menuName) {
                 if (!menuCount[menuName]) {
@@ -67,13 +67,13 @@ export const getFavourite = async (request: Request, response: Response) => {
             count,
         }));
 
-        return response.json({
+        response.json({
             status: true,
             data: result,
             message: "All report menu are retrieved",
         }).status(200);
     } catch (error) {
-        return response
+        response
             .json({
                 status: false,
                 message: `There is an error. ${error}`

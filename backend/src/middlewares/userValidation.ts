@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import {  Request, Response, NextFunction, } from 'express'
 import Joi from 'joi'
 
 /** create schema when add new menu's data, all of fileds have to be required */
@@ -7,9 +7,9 @@ const addDataSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(3).alphanum().required(),
     role: Joi.string().valid('MANAGER', 'USER').uppercase().required(),
-    profile_picture: Joi.allow().optional(),
     alamat: Joi.string().min(5).optional().required(),
     telephone: Joi.string().pattern(/^[0-9]{10,15}$/).optional().required(),
+    profile_picture: Joi.allow().optional(),
     user: Joi.optional()
 })
 
@@ -19,9 +19,9 @@ const editDataSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(3).alphanum().required(),
     role: Joi.string().valid('MANAGER', 'USER').uppercase().required(),
-    profile_picture: Joi.allow().optional(),
     alamat: Joi.string().min(5).optional().required(),
     telephone: Joi.string().pattern(/^[0-9]{10,15}$/).optional().required(),
+    profile_picture: Joi.allow().optional(),
     user: Joi.optional()
 })
 
@@ -31,13 +31,13 @@ const authSchema = Joi.object({
     password: Joi.string().min(3).alphanum().required(),
 })
 
-export const verifyAddUser = (request: Request, response: Response, next: NextFunction) => {
+export const verifyAddUser = (request: Request, response: Response, next: NextFunction): void => {
     /** validate a request body and grab error if exist */
     const { error } = addDataSchema.validate(request.body, { abortEarly: false })
 
     if (error) {
         /** if there is an error, then give a response like this */
-        return response.status(200).json({
+        response.status(400).json({
             status: false,
             message: error.details.map(it => it.message).join()
         })
@@ -45,13 +45,13 @@ export const verifyAddUser = (request: Request, response: Response, next: NextFu
     return next()
 }
 
-export const verifyEditUser = (request: Request, response: Response, next: NextFunction) => {
+export const verifyEditUser = (request: Request, response: Response, next: NextFunction): void => {
     /** validate a request body and grab error if exist */
     const { error } = editDataSchema.validate(request.body, { abortEarly: false })
 
     if (error) {
         /** if there is an error, then give a response like this */
-        return response.status(200).json({
+        response.status(400).json({
             status: false,
             message: error.details.map(it => it.message).join()
         })
@@ -59,13 +59,13 @@ export const verifyEditUser = (request: Request, response: Response, next: NextF
     return next()
 }
 
-export const verifyAuthentication = (request: Request, response: Response, next: NextFunction) => {
+export const verifyAuthentication = (request: Request, response: Response, next: NextFunction): void => {
     /** validate a request body and grab error if exist */
     const { error } = authSchema.validate(request.body, { abortEarly: false })
 
     if (error) {
         /** if there is an error, then give a response like this */
-        return response.status(200).json({
+        response.status(400).json({
             status: false,
             message: error.details.map(it => it.message).join()
         })
