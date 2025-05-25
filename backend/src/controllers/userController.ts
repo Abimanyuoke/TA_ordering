@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
-import { BASE_URL, SECRET } from "../global";
+import { BASE_URL } from "../global";
 import { v4 as uuidv4 } from "uuid";
 import md5 from "md5";
-import { sign } from "jsonwebtoken";
 import jwt from "jsonwebtoken"
 import path from "path";
 
@@ -70,92 +69,90 @@ export const getUserById = async (request: Request, response: Response): Promise
     }
 }
 
-// export const createUser = async (request: Request, response: Response) => {
-//     try {
-//         /** get requested data (data has been sent from request) */
-//         const { name, email, password, role } = request.body
-//         const uuid = uuidv4()
-
-//         /** variable filename use to define of uploaded file name */
-//         let filename = ""
-//         if (request.file) filename = request.file.filename /** get file name of uploaded file */
-
-//         /** process to save new user */
-//         const newUser = await prisma.user.create({
-//             data: { uuid, name, email, password: md5(password), role, profile_picture: filename }
-//         })
-
-//         return response.json({
-//             status: true,
-//             data: newUser,
-//             message: `New user has created`
-//         }).status(200)
-//     } catch (error) {
-//         return response
-//             .json({
-//                 status: false,
-//                 message: `There is an error. ${error}`
-//             })
-//             .status(400)
-//     }
-// }
-
-export const createUser = async (request: Request, response: Response): Promis<void> => {
+export const createUser = async (request: Request, response: Response): Promise<void> => {
     try {
+        /** get requested data (data has been sent from request) */
         const { name, email, password, role, alamat, telephone } = request.body
         const uuid = uuidv4()
 
+        /** variable filename use to define of uploaded file name */
         let filename = ""
-        if (request.file) filename = request.file.filename
+        if (request.file) filename = request.file.filename /** get file name of uploaded file */
 
+        /** process to save new user */
         const newUser = await prisma.user.create({
-            data: {
-                uuid,
-                name,
-                email,
-                password: md5(password),
-                role,
-                alamat,
-                telephone,
-                profile_picture: filename
-            }
+            data: { uuid, name, email, password: md5(password), role, profile_picture: filename, alamat, telephone}
         })
 
-        const tokenPayload = {
-            id: newUser.id,
-            uuid: newUser.uuid,
-            name: newUser.name,
-            role: newUser.role,
-            alamat: newUser.alamat,
-            telephone: newUser.telephone,
-
-        }
-
-        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET || "default_secret", {
-            expiresIn: "7d"
-        })
-
-        return response.status(200).json({
+        response.json({
             status: true,
-            message: `User created successfully`,
-            token,
-            data: {
-                id: newUser.id,
-                name: newUser.name,
-                role: newUser.role,
-                profile_picture: newUser.profile_picture,
-                alamat: newUser.alamat,
-                telephone: newUser.telephone
-            }
-        })
-
+            data: newUser,
+            message: `New user has created`
+        }).status(200)
     } catch (error) {
-        return response.status(400).json({
-            status: false,
-            message: `There is an error. ${error}`
-        })
+        response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400)
     }
 }
+
+// export const createUser = async (request: Request, response: Response): Promise<void> => {
+//     try {
+//         const { name, email, password, role } = request.body
+//         const uuid = uuidv4()
+
+//         let filename = ""
+//         if (request.file) filename = request.file.filename
+
+//         const newUser = await prisma.user.create({
+//             data: {
+//                 uuid,
+//                 name,
+//                 email,
+//                 password: md5(password),
+//                 role,
+//                 profile_picture: filename
+//             }
+//         })
+
+//         const tokenPayload = {
+//             id: newUser.id,
+//             uuid: newUser.uuid,
+//             name: newUser.name,
+//             role: newUser.role,
+//             alamat: newUser.alamat,
+//             telephone: newUser.telephone,
+
+//         }
+
+//         const token = jwt.sign(tokenPayload, process.env.JWT_SECRET || "default_secret", {
+//             expiresIn: "7d"
+//         })
+
+//         return response.status(200).json({
+//             status: true,
+//             message: `User created successfully`,
+//             token,
+//             data: {
+//                 id: newUser.id,
+//                 name: newUser.name,
+//                 role: newUser.role,
+//                 profile_picture: newUser.profile_picture,
+//                 alamat: newUser.alamat,
+//                 telephone: newUser.telephone
+//             }
+//         })
+
+//     } catch (error) {
+//         return response.status(400).json({
+//             status: false,
+//             message: `There is an error. ${error}`
+//         })
+//     }
+// }
 
 export const updateUser = async (request: Request, response: Response): Promise<void> => {
     try {
@@ -380,7 +377,7 @@ export const authentication = async (request: Request, response: Response): Prom
             alamat: user.alamat,
             telephone: user.telephone
         };
-
+ 
         // Generate JWT token
         const token = jwt.sign(
             { userId: user.id, role: user.role },

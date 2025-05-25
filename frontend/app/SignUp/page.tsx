@@ -14,6 +14,8 @@ import { InputGroupComponent } from "@/components/InputComponent"
 import FileInput from "@/components/fileInput"
 import { LuUserRound } from "react-icons/lu";
 import { GiPadlock } from "react-icons/gi";
+import { SiGooglemaps } from "react-icons/si";
+import { BsFillTelephoneForwardFill } from "react-icons/bs";
 
 
 export default function SignUp() {
@@ -21,7 +23,7 @@ export default function SignUp() {
 
     const [user, setUser] = useState<IUser>({
         id: 0, uuid: ``, name: ``, email: ``,
-        password: ``, profile_picture: ``, role: `USER`, createdAt: ``, updatedAt: ``
+        password: ``, profile_picture: ``, role: `USER`, alamat: ``, telephone: ``, createdAt: ``, updatedAt: ``
     })
     const router = useRouter()
     const TOKEN = getCookies("token") || ""
@@ -114,6 +116,29 @@ export default function SignUp() {
                                 onChange={val => setUser({ ...user, password: val })}
                                 required={true} label="Password" placeholder="Password" className="pl-9"/>
                         </div>
+
+                        <div className="flex items-center">
+
+                        <div className="relative flex w-full items-center">
+                            <div className="p-3 top-[26px] absolute text-[#8390A2]">
+                                <SiGooglemaps className=" text-lg" />
+                            </div>
+                            <InputGroupComponent id={`alamat`} type="text" value={user.alamat}
+                                onChange={val => setUser({ ...user, alamat: val })}
+                                required={true} label="Alamat" placeholder="Alamat" className="pl-9"/>
+                        </div>
+
+                        <div className="relative flex w-full items-center">
+                            <div className="p-3 top-[26px] absolute text-[#8390A2]">
+                                <BsFillTelephoneForwardFill className=" text-lg" />
+                            </div>
+                            <InputGroupComponent id={`telephone`} type="text" value={user.telephone}
+                                onChange={val => setUser({ ...user, telephone: val })}
+                                required={true} label="Telephone" placeholder="+62xxx" className="pl-9"/>
+                        </div>
+
+                        </div>
+
 
                             <FileInput acceptTypes={["application/pdf", "image/png", "image/jpeg", "image/jpg"]} id="profile_picture"
                                 label="Upload Picture" onChange={f => setFile(f)} required={false} />

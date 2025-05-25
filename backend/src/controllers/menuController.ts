@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { BASE_URL } from "../global";
 import fs from "fs"
 
-const prisma = new PrismaClient({ errorFormat: "pretty" })
+const prisma = new PrismaClient()
 
 export const getAllMenus = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {

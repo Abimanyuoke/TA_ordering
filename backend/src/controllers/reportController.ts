@@ -52,12 +52,12 @@ export const getFavourite = async (request: Request, response: Response): Promis
 
         // Menghitung jumlah pemesanan untuk setiap menu
         orderLists.forEach((orderList) => {
-            const menuName = orderList.Menu?.name; // Nama menu
+            const menuName = orderList.Menu?.name;
             if (menuName) {
                 if (!menuCount[menuName]) {
-                    menuCount[menuName] = 0; // Inisialisasi jika belum ada
+                    menuCount[menuName] = 0; 
                 }
-                menuCount[menuName] += orderList.quantity; // Menambahkan jumlah pemesanan
+                menuCount[menuName] += orderList.quantity; 
             }
         });
 
