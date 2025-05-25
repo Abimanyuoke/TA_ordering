@@ -17,7 +17,7 @@ type CashierProp = {
     className?: string
 }
 
-const CashierTemplate = ({ children, id, title, menuList, className }: CashierProp) => {
+const UserTemplate = ({ children, id, title, menuList, className }: CashierProp) => {
     return (
         <div className={`w-full min-h-dvh ${className}`} >
             <Sidebar menuList={menuList} title={title} id={id}>
@@ -28,4 +28,4 @@ const CashierTemplate = ({ children, id, title, menuList, className }: CashierPr
 }
 
 
-export default CashierTemplate
+export default UserTemplate

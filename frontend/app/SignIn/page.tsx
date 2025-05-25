@@ -23,7 +23,7 @@ export default function SignIn() {
             e.preventDefault()
             const url = `${BASE_API_URL}/user/login`
             const payload = JSON.stringify({ email: email, password })
-            const { data } = await axios.post<{ status: boolean; message: string; token: string; data?: { id: string; name: string; role: string; profile_picture?: string } }>(url, payload, {
+            const { data } = await axios.post<{ status: boolean; message: string; token: string; data?: { id: string; name: string; role: string; profile_picture?: string, alamat?: string, telephone?: string } }>(url, payload, {
                 headers: { "Content-Type": "application/json" }
             })
             if (data.status == true) {
@@ -34,9 +34,11 @@ export default function SignIn() {
                     storeCookie("name", data.data.name)
                     storeCookie("role", data.data.role)
                     storeCookie("profile_picture", data.data.profile_picture || "")
+                    storeCookie("alamat", data.data.alamat || "")
+                    storeCookie("telephone", data.data.telephone || "")
                     let role = data.data.role
                     if (role === `MANAGER`) setTimeout(() => router.replace(`/manager/dashboard`), 1000)
-                    else if (role === `CASHIER`) setTimeout(() => router.replace(`/cashier/home`), 1000)
+                    else if (role === `USER`) setTimeout(() => router.replace(`/user/home`), 1000)
                 }
             }
             else toast.warning(data.message, { duration: 2000 })

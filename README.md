@@ -51,7 +51,7 @@ TA-homeservices/
 ## 🚀 3. Running the Project
 
 > Make sure to run backend and frontend separately!
-
+  
 ### 🟦 Running Backend
 
 1. Go to the `backend` folder:

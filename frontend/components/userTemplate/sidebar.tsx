@@ -37,6 +37,8 @@ const Sidebar = ({ children, id, title, menuList }: CahsierProp) => {
         removeCookie("id");
         removeCookie("name");
         removeCookie("role");
+        removeCookie("alamat")
+        removeCookie("telephone")
         router.replace(`/login`);
     };
 
