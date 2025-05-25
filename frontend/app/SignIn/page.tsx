@@ -103,7 +103,7 @@ export default function SignIn() {
                             </div>
                             <input type={showPassword ? `text` : `password`} className="pl-10 text-[#8390A2] border border-[#2E8B57] rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-[#2E8B57]" value={password}
                                 onChange={e => setPassword(e.target.value)} placeholder="Password" id={`password - industri - app`} />
-                            <div className="cursor-pointer bg-primary rounded-r-md p-3 absolute right-0" onClick={() => setShowPassword(!showPassword)}>
+                            <div className="cursor-pointer rounded-r-md p-3 absolute right-0" onClick={() => setShowPassword(!showPassword)}>
                                 {showPassword ?
                                     <IoEyeSharp  className="text-[#8390A2] text-lg"/> :
                                     <HiEyeSlash className="text-[#8390A2] text-lg"/>

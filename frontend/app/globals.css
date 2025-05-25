@@ -8,6 +8,8 @@
 @theme {
   --color-background: var(--background);
   --font-inter: "Inter", "sans-serif";
+  --color-primary: #FAFAD2;
+  --color-secondary: #2E8B57;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -16,6 +16,8 @@ import { LuUserRound } from "react-icons/lu";
 import { GiPadlock } from "react-icons/gi";
 import { SiGooglemaps } from "react-icons/si";
 import { BsFillTelephoneForwardFill } from "react-icons/bs";
+import { IoEyeSharp } from "react-icons/io5";
+import { HiEyeSlash } from "react-icons/hi2";
 
 
 export default function SignUp() {
@@ -28,6 +30,7 @@ export default function SignUp() {
     const router = useRouter()
     const TOKEN = getCookies("token") || ""
     const [file, setFile] = useState<File | null>(null)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const handleSubmit = async (e: FormEvent) => {
         try {
@@ -79,8 +82,8 @@ export default function SignUp() {
                     </p>
                 </div>
 
-                <div className="bg-[#FCFCFC] shadow-lg rounded-xl p-6 w-80 max-w-sm">
-                    <div className="flex justify-between mb-4 gap-2">
+                <div className="bg-[#FCFCFC] shadow-lg rounded-xl p-6 w-[400px] max-w-sm">
+                    <div className="flex justify-evenly mb-4 gap-2">
                         <button className="w-32 text-sm cursor-pointer font-semibold text-[#2E8B57] border border-[#2E8B57] rounded px-3 py-1 hover:bg-[#2E8B57]/10 transition" onClick={() => router.push("/signIn")}>
                             Sign In
                         </button>
@@ -112,36 +115,42 @@ export default function SignUp() {
                             <div className="p-3 top-[26px] absolute text-[#8390A2]">
                                 <GiPadlock className=" text-lg" />
                             </div>
-                            <InputGroupComponent id={`password`} type="text" value={user.password}
+                            <InputGroupComponent id={`password`} type={showPassword ? `text` : `password`} value={user.password}
                                 onChange={val => setUser({ ...user, password: val })}
-                                required={true} label="Password" placeholder="Password" className="pl-9"/>
-                        </div>
-
-                        <div className="flex items-center">
-
-                        <div className="relative flex w-full items-center">
-                            <div className="p-3 top-[26px] absolute text-[#8390A2]">
-                                <SiGooglemaps className=" text-lg" />
+                                required={true} label="Password" placeholder="Password" className="pl-9" />
+                            <div className="cursor-pointer rounded-r-md p-3 top-6 absolute right-0" onClick={() => setShowPassword(!showPassword)}>
+                                {showPassword ?
+                                    <IoEyeSharp className="text-[#8390A2] text-lg" /> :
+                                    <HiEyeSlash className="text-[#8390A2] text-lg" />
+                                }
                             </div>
-                            <InputGroupComponent id={`alamat`} type="text" value={user.alamat}
-                                onChange={val => setUser({ ...user, alamat: val })}
-                                required={true} label="Alamat" placeholder="Alamat" className="pl-9"/>
                         </div>
 
-                        <div className="relative flex w-full items-center">
-                            <div className="p-3 top-[26px] absolute text-[#8390A2]">
-                                <BsFillTelephoneForwardFill className=" text-lg" />
+                        <div className="flex items-center gap-2">
+
+                            <div className="relative flex w-full items-center">
+                                <div className="p-3 top-[26px] absolute text-[#8390A2]">
+                                    <SiGooglemaps className=" text-lg" />
+                                </div>
+                                <InputGroupComponent id={`alamat`} type="text" value={user.alamat}
+                                    onChange={val => setUser({ ...user, alamat: val })}
+                                    required={true} label="Alamat" placeholder="Alamat" className="pl-9" />
                             </div>
-                            <InputGroupComponent id={`telephone`} type="text" value={user.telephone}
-                                onChange={val => setUser({ ...user, telephone: val })}
-                                required={true} label="Telephone" placeholder="+62xxx" className="pl-9"/>
-                        </div>
+
+                            <div className="relative flex w-full items-center">
+                                <div className="p-3 top-[26px] absolute text-[#8390A2]">
+                                    <BsFillTelephoneForwardFill className=" text-lg" />
+                                </div>
+                                <InputGroupComponent id={`telephone`} type="text" value={user.telephone}
+                                    onChange={val => setUser({ ...user, telephone: val })}
+                                    required={true} label="Telephone" placeholder="+62xxx" className="pl-9" />
+                            </div>
 
                         </div>
 
 
-                            <FileInput acceptTypes={["application/pdf", "image/png", "image/jpeg", "image/jpg"]} id="profile_picture"
-                                label="Upload Picture" onChange={f => setFile(f)} required={false} />
+                        <FileInput acceptTypes={["application/pdf", "image/png", "image/jpeg", "image/jpg"]} id="profile_picture"
+                            label="Upload Picture" onChange={f => setFile(f)} required={false} />
 
                         <button
                             type="submit" className="mt-3 bg-[#2E8B57] text-white py-2 rounded font-bold">

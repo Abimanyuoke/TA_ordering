@@ -39,7 +39,7 @@ const Sidebar = ({ children, id, title, menuList }: CahsierProp) => {
         removeCookie("role");
         removeCookie("alamat")
         removeCookie("telephone")
-        router.replace(`/login`);
+        router.replace(`/signIn`);
     };
 
     useEffect(() => {
@@ -59,7 +59,7 @@ const Sidebar = ({ children, id, title, menuList }: CahsierProp) => {
     return (
         <div className="w-full min-h-dvh">
             {/* Header */}
-            <header className="flex justify-between items-center p-4 mb-0 bg-primary shadow-md">
+            <header className="flex justify-between items-center p-4 mb-0 bg-secondary shadow-md">
                 <div className="flex gap-2">
                     <button onClick={() => setIsShow(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -103,15 +103,16 @@ const Sidebar = ({ children, id, title, menuList }: CahsierProp) => {
             {/* Sidebar */}
             <div
                 ref={sidebarRef}
-                className={`flex flex-col w-2/3 md:w-1/2 lg:w-1/4 h-full p-5 fixed top-0 right-full transition-transform z-50 bg-white border-r border-primary ${
+                className={`flex flex-col w-2/3 md:w-1/2 lg:w-1/4 h-full p-5 fixed top-0 right-full transition-transform z-50 bg-primary shadow-lg shadow-black ${
                     isShow ? "translate-x-full" : ""
                 }`}
             >
                 <div className="flex justify-between items-center p-4 mb-0">
                     {/* Logo */}
                     <div className="mb-3 w-full flex justify-start">
-                        <div className="flex items-center space-x-2">
-                            <Image src="/Logo.svg" alt="Logo" width={150} height={150} />
+                        <div className="flex flex-col items-center space-x-2">
+                            <Image src="/Logosidebar.svg" alt="Logo" width={100} height={100} />
+                            <p className="font-bold text-secondary text-4xl">Plantify</p>
                         </div>
                     </div>
                 </div>
@@ -130,15 +131,15 @@ const Sidebar = ({ children, id, title, menuList }: CahsierProp) => {
                 </div>
 
                 {/* Logout */}
-                <div className="absolute bottom-4 w-full p-2">
+                <div className="absolute bottom-4 w-full p-4">
                     <div className="flex items-center space-x-2 text-[#333333] px-5">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             strokeWidth={1.5} stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round"
                                 d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
                         </svg>
-                        <button className="font-bold cursor-pointer" onClick={handleLogout}>
-                            Logout
+                        <button className="font-semibold cursor-pointer" onClick={handleLogout}>
+                            Exit
                         </button>
                     </div>
                 </div>
