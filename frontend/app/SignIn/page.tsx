@@ -112,7 +112,7 @@ export default function SignIn() {
                         </div>
 
                         <button
-                            type="submit" className="mt-3 bg-[#2E8B57] text-white py-2 rounded font-bold">
+                            type="submit" className="mt-3 bg-[#2E8B57] text-white py-2 rounded font-bold cursor-pointer">
                             Sign In
                         </button>
                     </form>

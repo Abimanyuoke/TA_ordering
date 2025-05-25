@@ -153,7 +153,7 @@ export default function SignUp() {
                             label="Upload Picture" onChange={f => setFile(f)} required={false} />
 
                         <button
-                            type="submit" className="mt-3 bg-[#2E8B57] text-white py-2 rounded font-bold">
+                            type="submit" className="mt-3 bg-[#2E8B57] text-white py-2 rounded font-bold cursor-pointer">
                             Sign Up
                         </button>
                     </form>
