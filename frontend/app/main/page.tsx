@@ -1,15 +1,17 @@
 "use client";
 
+import imgLanding from "@/public/image/img - landing.png";
+import imgLogo from "@/public/image/img - logo.png";
 import Image from "next/image";
-import imgLanding from "@/public/image/img - landing.png"
-import imgLogo from "@/public/image/img - logo.png"
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
+        const router = useRouter()
     return (
         <div className="bg-white min-h-screen font-inter overflow-x-hidden"> 
             <section className="grid md:grid-cols-2 gap-8 p-10 h-[640px] items-center bg-white">
                 <div>
-                    <h1 className="text-6xl font-extrabold text-[#333333] mb-4 leading-16">
+                    <h1 className="text-4xl md:text-6xl font-extrabold text-[#333333] mb-4 leading-16">
                         Plant, Nurture, and <br /> Be Happy with the <br /> Plants of Your Choice
                     </h1>
                     <p className="text-[#333333] mb-6 text-[15px]">
@@ -19,7 +21,7 @@ export default function LandingPage() {
                         practical solutions, and quality tools and materials to help care
                         for plants at home.
                     </p>
-                    <button className="w-full font-bold bg-[#2E8B57] text-white px-6 py-3 rounded-lg hover:bg-[#2E8B57] transition">
+                    <button className="w-full font-bold bg-[#2E8B57] text-white px-6 py-3 rounded-lg hover:bg-[#276f48] transition" onClick={() => router.push("/signUp")}>
                         Join Us
                     </button>
                 </div>
