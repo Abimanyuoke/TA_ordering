@@ -13,7 +13,7 @@ type PropsLayout = {
 const RootLayout = ({ children }: PropsLayout) => {
     return (
         <div className="overflow-x-hidden overflow-y-hidden">
-            <UserTemplate title="Home" id="home" menuList={UserList}>
+            <UserTemplate title="" id="home" menuList={UserList}>
                 {children}
             </UserTemplate>
         </div>

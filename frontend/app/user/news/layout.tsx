@@ -12,7 +12,7 @@ type PropsLayout = {
 
 const RootLayout = ({ children }: PropsLayout) => {
     return (
-        <UserTemplate title="Articles and News" id="news" menuList={UserList}>
+        <UserTemplate title="" id="news" menuList={UserList}>
             {children}
         </UserTemplate>
     )

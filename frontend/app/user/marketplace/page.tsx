@@ -204,8 +204,8 @@ const OrderPage = () => {
 
             <div className="mt-2 rounded-lg">
                 <div className="flex flex-col my-10 px-10">
-                    <h4 className="text-xl font-bold text-slate-900">Menu Yang Tersedia</h4>
-                    <p className="mb-2">Silakan pilih menu yang ingin dipesan.</p>
+                    <h4 className="text-xl font-bold text-slate-900">Plantify Yang Tersedia</h4>
+                    <p className="mb-2">Silakan pilih tanaman yang ingin dipesan.</p>
                     <div className="flex items-center w-full max-w-md flex-grow">
                         <Search url={`/user/marketplace`} search={search} />
                     </div>
@@ -220,7 +220,7 @@ const OrderPage = () => {
                         {menu.map((data) => (
                             <div key={data.id} className="p-4 rounded-lg flex flex-col items-center text-center">
                                 <div className="bg-[#2E8B57] text-white rounded-lg overflow-hidden shadow-md flex flex-col h-[460px] w-[300px] mx-auto">
-                                    <Image width={300} height={300} src={`${BASE_IMAGE_MENU}/${data.picture}`} className="shadow-2xl object-cover bg-white w-full h-[200px] rounded-t-lg" alt="preview" unoptimized />
+                                    <Image width={400} height={400} src={`${BASE_IMAGE_MENU}/${data.picture}`} className="shadow-2xl object-cover bg-white w-full h-[200px] rounded-t-lg" alt="preview" unoptimized />
                                     <div className="flex flex-col justify-between flex-1 p-4">
                                         <div className="space-y-1">
                                             <h5 className="font-bold text-xl px-4">{data.name}</h5>

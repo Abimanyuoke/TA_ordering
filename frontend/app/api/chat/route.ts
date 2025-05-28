@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
                 'X-Title': 'MyAIChatApp',
             },
             body: JSON.stringify({
-                model: '//', // rek ini bisa diganti model lain sesuai kebutuhan di openrouter
+                model: 'deepseek/deepseek-prover-v2:free', // rek ini bisa diganti model lain sesuai kebutuhan di openrouter
                 messages,
             }),
         });
