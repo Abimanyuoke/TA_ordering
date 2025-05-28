@@ -6,7 +6,7 @@ import fs from "fs"
 
 const prisma = new PrismaClient()
 
-export const getAllMenus = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const getAllMenus = async (request: Request, response: Response): Promise<void> => {
     try {
         const { search } = request.query;
 
@@ -27,7 +27,7 @@ export const getAllMenus = async (request: Request, response: Response, next: Ne
     }
 };
 
-export const createMenu = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const createMenu = async (request: Request, response: Response): Promise<void> => {
     try {
         /** get requested data (data has been sent from request) */
         const { name, price, category, description } = request.body

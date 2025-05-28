@@ -11,6 +11,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { GiPadlock } from "react-icons/gi";
 import { IoEyeSharp } from "react-icons/io5";
 import { HiEyeSlash } from "react-icons/hi2";
+import axios from "axios";
 
 export default function SignIn() {
 
@@ -23,19 +24,19 @@ export default function SignIn() {
             e.preventDefault()
             const url = `${BASE_API_URL}/user/login`
             const payload = JSON.stringify({ email: email, password })
-            const { data } = await axios.post<{ status: boolean; message: string; token: string; data?: { id: string; name: string; role: string; profile_picture?: string, alamat?: string, telephone?: string } }>(url, payload, {
+            const { data } = await axios.post<{ status: boolean; message: string; token: string; data?: { id: string; name: string; role: string; profile_picture?: string, alamat: string, telephone: string } }>(url, payload, {
                 headers: { "Content-Type": "application/json" }
             })
             if (data.status == true) {
                 toast.success("Login success", { duration: 2000 })
-                storeCookie("token", data.token)
                 if (data.data) {
+                    storeCookie("token", data.token)
                     storeCookie("id", data.data.id)
                     storeCookie("name", data.data.name)
                     storeCookie("role", data.data.role)
                     storeCookie("profile_picture", data.data.profile_picture || "")
-                    storeCookie("alamat", data.data.alamat || "")
-                    storeCookie("telephone", data.data.telephone || "")
+                    storeCookie("alamat", data.data.alamat)
+                    storeCookie("telephone", data.data.telephone)
                     let role = data.data.role
                     if (role === `MANAGER`) setTimeout(() => router.replace(`/manager/dashboard`), 1000)
                     else if (role === `USER`) setTimeout(() => router.replace(`/user/home`), 1000)

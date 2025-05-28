@@ -180,9 +180,9 @@ const OrderPage = () => {
     };
 
     const category = (cat: string): React.ReactNode => {
-        if (cat === "FOOD") return <span className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Food</span>;
+        if (cat === "TANAMAN_HIAS") return <span className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">TANAMAN_HIAS</span>;
         if (cat === "SNACK") return <span className="bg-indigo-100 text-indigo-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Snack</span>;
-        return <span className="bg-purple-100 text-purple-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Drink</span>;
+        return <span className="bg-purple-100 text-purple-800 text-sm font-medium px-2.5 py-0.5 rounded-full"></span>;
     };
 
     return (
@@ -207,7 +207,7 @@ const OrderPage = () => {
                     <h4 className="text-xl font-bold text-slate-900">Menu Yang Tersedia</h4>
                     <p className="mb-2">Silakan pilih menu yang ingin dipesan.</p>
                     <div className="flex items-center w-full max-w-md flex-grow">
-                        <Search url={`/cashier/toko`} search={search} />
+                        <Search url={`/user/marketplace`} search={search} />
                     </div>
                 </div>
 
@@ -219,7 +219,7 @@ const OrderPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-4 my-10">
                         {menu.map((data) => (
                             <div key={data.id} className="p-4 rounded-lg flex flex-col items-center text-center">
-                                <div className="bg-primary text-white rounded-lg overflow-hidden shadow-md flex flex-col h-[460px] w-[300px] mx-auto">
+                                <div className="bg-[#2E8B57] text-white rounded-lg overflow-hidden shadow-md flex flex-col h-[460px] w-[300px] mx-auto">
                                     <Image width={300} height={300} src={`${BASE_IMAGE_MENU}/${data.picture}`} className="shadow-2xl object-cover bg-white w-full h-[200px] rounded-t-lg" alt="preview" unoptimized />
                                     <div className="flex flex-col justify-between flex-1 p-4">
                                         <div className="space-y-1">

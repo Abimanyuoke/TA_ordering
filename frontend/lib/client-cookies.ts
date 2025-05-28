@@ -11,3 +11,4 @@ export const storeCookie = (key: string, plainText: string) => {
 export const removeCookie = (key: string) => {
     Cookies.remove(key)
 }
+

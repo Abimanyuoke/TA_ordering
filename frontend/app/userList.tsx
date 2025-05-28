@@ -62,7 +62,7 @@ let UserList: IPropMenu[] = [
     {
         id: `marketplace`,
         path: `/user/marketplace`,
-        label: `Market Place`,
+        label: `MarketPlace`,
         icon:
             <svg width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

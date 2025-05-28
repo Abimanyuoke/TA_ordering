@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
-import { BASE_URL } from "../global";
+import { BASE_URL, SECRET } from "../global";
 import { v4 as uuidv4 } from "uuid";
 import md5 from "md5";
-import jwt from "jsonwebtoken"
+import jwt, { sign } from "jsonwebtoken"
 import path from "path";
 
 
@@ -81,7 +81,7 @@ export const createUser = async (request: Request, response: Response): Promise<
 
         /** process to save new user */
         const newUser = await prisma.user.create({
-            data: { uuid, name, email, password: md5(password), role, profile_picture: filename, alamat, telephone}
+            data: { uuid, name, email, password: md5(password), role, profile_picture: filename, alamat, telephone }
         })
 
         response.json({
@@ -277,7 +277,7 @@ export const changePicture = async (request: Request, response: Response): Promi
 
     } catch (error) {
         console.error('Error changing profile picture:', error);
-        
+
         // Clean up uploaded file if error occurred
         if (request.file) {
             const newPath = path.join(BASE_URL, 'public', 'profile_picture', request.file.filename);
@@ -339,65 +339,46 @@ export const deleteUser = async (request: Request, response: Response): Promise<
 
 export const authentication = async (request: Request, response: Response): Promise<void> => {
     try {
-        const { email, password } = request.body;
+        const { email, password } = request.body /** get requested data (data has been sent from request) */
 
-        // Input validation
-        if (!email || !password) {
-            response.status(400).json({
-                status: false,
-                message: "Email and password are required"
-            });
+        /** find a valid admin based on username and password */
+        const findUser = await prisma.user.findFirst({
+            where: { email, password: md5(password) }
+        })
+
+        /** check is admin exists */
+        if (!findUser) {
+            response
+                .status(200)
+                .json({ status: false, logged: false, message: `Email or password is invalid` });
             return;
         }
 
-        // Find user with hashed password
-        const user = await prisma.user.findFirst({
-            where: { 
-                email,
-                password: md5(password) 
-            }
-        });
-
-        if (!user) {
-            response.status(401).json({
-                status: false,
-                logged: false,
-                message: "Invalid email or password"
-            });
-            return;
+        let data = {
+            id: findUser.id,
+            name: findUser.name,
+            email: findUser.email,
+            role: findUser.role,
+            profile_picture: findUser.profile_picture,
+            alamat: findUser.alamat,
+            telephone: findUser.telephone,
         }
 
-        // Prepare user data without sensitive information
-        const userData = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            profile_picture: user.profile_picture,
-            alamat: user.alamat,
-            telephone: user.telephone
-        };
- 
-        // Generate JWT token
-        const token = jwt.sign(
-            { userId: user.id, role: user.role },
-            process.env.SECRET || 'your-secret-key',
-            { expiresIn: '1h' }
-        );
+        /** define payload to generate token */
+        let payload = JSON.stringify(data)
 
-        response.status(200).json({
-            status: true,
-            logged: true,
-            data: userData,
-            token,
-            message: "Login successful"
-        });
+        /** generate token */
+        let token = sign(payload, SECRET || "joss")
 
+        response
+            .status(200)
+            .json({ status: true, logged: true, data: data, message: `Login Success`, token })
     } catch (error) {
-        console.error('Authentication error:', error);
-        response.status(500).json({
-            status: false,
-            message: "Authentication failed"
-        });
+        response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400)
     }
 };

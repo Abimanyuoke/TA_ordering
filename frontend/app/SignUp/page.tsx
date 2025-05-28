@@ -36,12 +36,14 @@ export default function SignUp() {
         try {
             e.preventDefault()
             const url = `${BASE_API_URL}/user`
-            const { name, email, password, role } = user
+            const { name, email, password, role, alamat, telephone } = user
             const payload = new FormData()
             payload.append("name", name || "")
             payload.append("email", email || "")
             payload.append("password", password || "")
             payload.append("role", role || "USER")
+            payload.append("alamat", alamat || "")
+            payload.append("telephone", telephone || "")
             if (file !== null) payload.append("profile_picture", file)
 
             const response = await post(url, payload, TOKEN)
@@ -50,7 +52,7 @@ export default function SignUp() {
             if (data.status) {
                 toast.success("Your account has been created, please login")
                 setTimeout(() => {
-                    router.replace(`/login`)
+                    router.replace(`/signIn`)
                 }, 2000)
             } else {
                 toast.warning("Your password or email is wrong", { duration: 2000 })

@@ -9,34 +9,17 @@ interface JwtPayload {
     role: string;
 }
 
-// export const verifyToken = (request: Request, response: Response, next: NextFunction) => {
-//     const token = request.headers.authorization?.split(' ')[1];
-
-//     if (!token) {
-//         return response.status(403).json({ message: 'Access denied. No token provided.' });
-//     }
-
-//     try {
-//         const secretKey = SECRET || ""
-//         const decoded = verify(token, secretKey);
-//         request.body.user = decoded as JwtPayload;
-//         next();
-//     } catch (error) {
-//         return response.status(401).json({ message: 'Invalid token.' });
-//     }
-// };
-
 export const verifyToken = (request: Request, response: Response, next: NextFunction): void => {
     const token = request.headers.authorization?.split(' ')[1];
 
     if (!token) {
         response.status(403).json({ message: 'Access denied. No token provided.' });
-        return; // Just return after sending response
+        return;
     }
 
     try {
         const secretKey = SECRET || "";
-        const decoded = verify(token, secretKey);
+        const decoded = verify(token as string, secretKey);
         request.body.user = decoded as JwtPayload;
         next();
     } catch (error) {

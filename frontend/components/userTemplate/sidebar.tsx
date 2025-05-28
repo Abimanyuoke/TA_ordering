@@ -95,7 +95,7 @@ const Sidebar = ({ children, id, title, menuList }: CahsierProp) => {
 
             {/* Chat Button */}
             <Link href="/chat">
-                <div className="fixed bottom-6 right-6 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-800 transition">
+                <div className="fixed bottom-6 right-6 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-800 transition z-[99999]">
                     <IoChatbubbleEllipsesSharp className="w-5 h-5" />
                 </div>
             </Link>

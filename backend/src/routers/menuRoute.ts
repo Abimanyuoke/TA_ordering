@@ -7,7 +7,7 @@ import uploadFile from "../middlewares/menuUpload"
 const app = express()
 app.use(express.json())
 
-app.get(`/`, [verifyToken, verifyRole(["USER", "MANAGER"])], getAllMenus)
+app.get(`/`, getAllMenus)
 app.post(`/`, [ uploadFile.single("picture"), verifyAddMenu], createMenu)
 app.put(`/:id`, [verifyToken, verifyRole(["MANAGER"]), uploadFile.single("picture"), verifyEditMenu], updateMenu)
 app.delete(`/:id`, [verifyToken, verifyRole(["MANAGER"])], deleteMenu)

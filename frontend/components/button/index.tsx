@@ -44,6 +44,15 @@ export const ButtonPrimary = ({ children, type, onClick, className }: Props) => 
     )
 }
 
+export const ButtonKeranjang = ({ children, type, onClick, className }: Props) => {
+    return (
+        <button className={`text-sm border text-[#2E8B57] rounded-md py-2 px-4 bg-white font-bold hover:cursor-pointer transition-all duration-300 ${className}`}
+            type={type} onClick={() => { if (onClick) onClick() }}>
+            {children}
+        </button>
+    )
+}
+
 export const DangerOutline = ({ children, type, onClick, className }: Props) => {
     return (
         <button className={`text-sm border-2 border-red-700 text-red-500 rounded-md py-2 px-4 bg-white font-bold hover:bg-red-600 hover:text-white transition-all duration-300 ml-2 ${className}`}
