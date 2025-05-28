@@ -1,5 +1,6 @@
 import UserTemplate from "@/components/userTemplate"
 import UserList from "../../userList"
+import { Toaster } from "sonner"
 
 
 export const metadata = {
@@ -13,9 +14,12 @@ type PropsLayout = {
 
 const RootLayout = ({ children }: PropsLayout) => {
     return (
-        <UserTemplate title="" id="marketplace" menuList={UserList}>
-            {children}
-        </UserTemplate>
+        <div className="overflow-x-hidden">
+            <Toaster position="top-right" richColors/>
+            <UserTemplate title="" id="marketplace" menuList={UserList}>
+                {children}
+            </UserTemplate>
+        </div>
     )
 }
 

@@ -10,7 +10,7 @@ import { AlertToko } from "@/components/alert";
 import Image from "next/image";
 import { ButtonPrimary, ButtonDanger } from "@/components/button";
 import { TiShoppingCart } from "react-icons/ti";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "sonner";
 import { InputGroupComponent, TextGroupComponent } from "@/components/InputComponent";
 import CardSelect from "@/components/card";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -133,7 +133,7 @@ const OrderPage = () => {
         const userId = Number(getCookies("id"));
 
         if (!userId) {
-            toast("User not found", { containerId: "toastOrder", type: "error" });
+            toast.error("User not found", { duration: 2000 });
             return;
         }
 
@@ -166,16 +166,16 @@ const OrderPage = () => {
 
             const data = await response.json();
             if (data.status) {
-                toast(data.message, { containerId: "toastOrder", hideProgressBar: true, type: "success" });
+                toast.success(data.message, { duration: 2000 });
                 setTimeout(() => {
                     resetOrderState();
                     router.refresh();
                 });
             } else {
-                toast(data.message, { containerId: "toastOrder", hideProgressBar: true, type: "warning" });
+                toast.warning(data.message, { duration: 2000 });
             }
         } catch (error) {
-            toast("Something went wrong", { containerId: "toastOrder", hideProgressBar: true, type: "error" });
+            toast.error("Something went wrong", { duration: 2000 });
         }
     };
 
@@ -187,7 +187,6 @@ const OrderPage = () => {
 
     return (
         <div>
-            <ToastContainer containerId="toastOrder" />
             <div className="sticky top-4 z-50 flex justify-end pr-10 pt-4">
                 <button onClick={() => setOrder(true)}>
                     <div className="bg-black py-1 px-2 flex items-center justify-center rounded-md relative">

@@ -356,7 +356,7 @@ const setting = {
             {/* Video */}
             <div className='py-10'>
                 <div className='flex justify-start items-center p-10'>
-                    <h1 className='text-4xl font-bold'>Video Terbaru</h1>
+                    <h1 className='text-4xl font-bold'>Maintenance Education Media</h1>
                 </div>
                 <div className='mt-6 pl-6 pr-[300px]'>
                     <Slider {...setting}>

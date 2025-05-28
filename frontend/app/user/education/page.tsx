@@ -4,7 +4,7 @@ export default function Education() {
     return (
         <div className="min-h-screen bg-[#1E1E1E]">
 
-            <div className="bg-white py-6 px-6">
+            <div className="bg-white p-6">
                 <div className="max-w-md mb-6">
                     <input
                         type="text" placeholder="Search" className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-[#2E8B57]"
