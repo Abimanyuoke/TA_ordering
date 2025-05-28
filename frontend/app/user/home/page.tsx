@@ -112,7 +112,7 @@ const videos: Video[] = [
         channel: 'Rick Astley',
         views: '1.2B views',
         timestamp: '3 years ago',
-        thumbnail: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        thumbnail: 'https://www.youtube.com/embed/eXti7Z5S4TQ'
     },
     {
         id: 2,
@@ -120,7 +120,7 @@ const videos: Video[] = [
         channel: 'Cool Channel',
         views: '500K views',
         timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        thumbnail: 'https://www.youtube.com/embed/NaQfp48stwc'
     },
     {
         id: 3,
@@ -128,7 +128,7 @@ const videos: Video[] = [
         channel: 'Cool Channel',
         views: '500K views',
         timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        thumbnail: 'https://www.youtube.com/embed/hLxmGAFebxM'
     },
     {
         id: 4,
@@ -136,7 +136,7 @@ const videos: Video[] = [
         channel: 'Cool Channel',
         views: '500K views',
         timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        thumbnail: 'https://www.youtube.com/embed/EH84EAq4IaA'
     },
     {
         id: 5,
@@ -144,7 +144,7 @@ const videos: Video[] = [
         channel: 'Cool Channel',
         views: '500K views',
         timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        thumbnail: 'https://www.youtube.com/embed/X9gktB2gMEE'
     },
     {
         id: 6,
@@ -152,7 +152,7 @@ const videos: Video[] = [
         channel: 'Cool Channel',
         views: '500K views',
         timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        thumbnail: 'https://www.youtube.com/embed/E6cWrYKmdfw'
     },
     {
         id: 7,
@@ -160,9 +160,68 @@ const videos: Video[] = [
         channel: 'Cool Channel',
         views: '500K views',
         timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        thumbnail: 'https://www.youtube.com/embed/AXch3-Xm2LE'
     },
-    // Add more videos as needed
+];
+
+
+const plantguide: Video[] = [
+    {
+        id: 1,
+        title: 'Never Gonna Give You Up',
+        channel: 'Rick Astley',
+        views: '1.2B views',
+        timestamp: '3 years ago',
+        thumbnail: 'https://www.youtube.com/embed/eXti7Z5S4TQ'
+    },
+    {
+        id: 2,
+        title: 'Another Great Video',
+        channel: 'Cool Channel',
+        views: '500K views',
+        timestamp: '2 months ago',
+        thumbnail: 'https://www.youtube.com/embed/NaQfp48stwc'
+    },
+    {
+        id: 3,
+        title: 'Another Great Video',
+        channel: 'Cool Channel',
+        views: '500K views',
+        timestamp: '2 months ago',
+        thumbnail: 'https://www.youtube.com/embed/hLxmGAFebxM'
+    },
+    {
+        id: 4,
+        title: 'Another Great Video',
+        channel: 'Cool Channel',
+        views: '500K views',
+        timestamp: '2 months ago',
+        thumbnail: 'https://www.youtube.com/embed/EH84EAq4IaA'
+    },
+    {
+        id: 5,
+        title: 'Another Great Video',
+        channel: 'Cool Channel',
+        views: '500K views',
+        timestamp: '2 months ago',
+        thumbnail: 'https://www.youtube.com/embed/X9gktB2gMEE'
+    },
+    {
+        id: 6,
+        title: 'Another Great Video',
+        channel: 'Cool Channel',
+        views: '500K views',
+        timestamp: '2 months ago',
+        thumbnail: 'https://www.youtube.com/embed/E6cWrYKmdfw'
+    },
+    {
+        id: 7,
+        title: 'Another Great Video',
+        channel: 'Cool Channel',
+        views: '500K views',
+        timestamp: '2 months ago',
+        thumbnail: 'https://www.youtube.com/embed/AXch3-Xm2LE'
+    },
 ];
 
 
