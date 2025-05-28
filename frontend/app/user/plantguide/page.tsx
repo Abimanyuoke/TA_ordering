@@ -206,7 +206,7 @@ export default function PlantGuide() {
         <div className="p-6 bg-white bg-opacity-90 min-h-screen">
             <div className="flex flex-col my-10 px-10">
                 <h4 className="text-xl font-bold text-slate-900">Plant Guide</h4>
-                <p className="mb-2">Silakan pilih tanaman yang ingin anda ketahui.</p>
+                <p className="mb-2">Silakan pilih tanaman yang ingin anda ketahui</p>
                 <input
                     type="text"
                     placeholder="Search plants..."
