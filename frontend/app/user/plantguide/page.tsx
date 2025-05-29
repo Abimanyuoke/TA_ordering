@@ -221,8 +221,7 @@ export default function PlantGuide() {
                     <div
                         key={plant.id}
                         onClick={() => setSelectedPlant(plant)}
-                        className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow cursor-pointer border border-green-100"
-                    >
+                        className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow cursor-pointer border border-green-100">
                         <h3 className="text-xl font-bold mb-2 text-green-700">{plant.attributes.name}</h3>
                         <p className="text-gray-600 mb-2 italic">{plant.attributes.scientific_name}</p>
                         <p className="text-gray-700 line-clamp-2">{plant.attributes.description}</p>
@@ -233,7 +232,6 @@ export default function PlantGuide() {
                 ))}
             </div>
 
-            {/* Plant Detail Modal */}
             {selectedPlant && (
                 <div className="fixed inset-0 backdrop-blur-md flex items-center justify-center p-4 z-50 font-inter">
                     <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
