@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import Image from "next/image";
-import imgLogo from "@/public/image/img - logo.png"
+import imgLogo from "@/public/Logo.svg"
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {

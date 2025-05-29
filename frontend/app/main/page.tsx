@@ -1,7 +1,7 @@
 "use client";
 
-import imgLanding from "@/public/image/img - landing.png";
-import imgLogo from "@/public/image/img - logo.png";
+import imgLanding from "@/public/image/img - landing.jpg";
+import imgLogo from "@/public/Logo.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 

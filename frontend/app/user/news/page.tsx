@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import img1 from '@/public/image/Articles/1.jpg'
+import img2 from '@/public/image/Articles/2.jpg'
+import img3 from '@/public/image/Articles/3.jpeg'
+import img4 from '@/public/image/Articles/4.webp'
+import img5 from '@/public/image/Articles/5.jpg'
+import img6 from '@/public/image/Articles/6.avif'
 
 type NewsArticle = {
     id: string | number;
@@ -8,7 +14,7 @@ type NewsArticle = {
     source: string;
     date: string;
     description: string;
-    image?: string;
+    image?: any;
     content: string;
     url: string;
 };
@@ -26,9 +32,9 @@ export default function PlantNews() {
                 source: "Botany Today",
                 date: "May 15, 2023",
                 description: "Research shows significant improvements in stress levels when surrounded by greenery.",
-                image: "/image/Plantnews/indoor-plants.jpg",
+                image: img1,
                 content: "A comprehensive study across 50 offices showed employees with plants reported 15% lower stress levels. The presence of greenery was linked to increased productivity and overall job satisfaction. Experts recommend at least one medium-sized plant per 100 square feet of workspace.",
-                url: "#"
+                url: "https://stories.tamu.edu/news/2024/02/06/livening-up-your-space-with-plants-can-boost-your-mental-health/?utm_source=chatgpt.com"
             },
             {
                 id: 2,
@@ -36,9 +42,9 @@ export default function PlantNews() {
                 source: "Global Botany News",
                 date: "May 10, 2023",
                 description: "Scientists identify new species with potential medicinal properties.",
-                image: "/image/Plantnews/tropical-plant.jpg",
+                image: img2,
                 content: "The newly discovered Philodendron amazonicus shows promise in early trials for anti-inflammatory properties. Indigenous tribes have used the plant for generations to treat wounds and fevers. Researchers are now studying its potential for modern pharmaceuticals.",
-                url: "#"
+                url: "https://www.fieldmuseum.org/about/press/mystery-plant-amazon-declared-new-species-after-nearly-50-years-flummoxing-scientists?utm_source=chatgpt.com"
             },
             {
                 id: 3,
@@ -46,9 +52,9 @@ export default function PlantNews() {
                 source: "Sustainable Cities",
                 date: "April 28, 2023",
                 description: "Major cities converting unused spaces into productive gardens.",
-                image: "/image/Plantnews/urban-farming.jpg",
+                image: img3, 
                 content: "The program has created 12 acres of new growing space downtown, producing 15,000 pounds of fresh produce annually. Participants report improved community bonds and access to fresh food. The initiative aims to expand to 50 acres by 2025.",
-                url: "#"
+                url: "https://igrownews.com/the-challenges-and-benefits-of-urban-farming/?utm_source=chatgpt.com"
             },
             {
                 id: 4,
@@ -56,9 +62,9 @@ export default function PlantNews() {
                 source: "Environmental Science Journal",
                 date: "April 20, 2023",
                 description: "Researchers document shifts in flowering times across continents.",
-                image: "/image/Plantnews/flowering-plants.jpg",
+                image: img4,
                 content: "Data from 120 research stations shows spring-flowering plants are blooming 2.3 days earlier per decade. This phenological shift could disrupt pollination cycles and ecosystem relationships. The changes are most pronounced in temperate regions.",
-                url: "#"
+                url: "https://www.earth.com/news/flowers-blooming-92-days-earlier-due-to-climate-change/?utm_source=chatgpt.com"
             },
             {
                 id: 5,
@@ -66,9 +72,9 @@ export default function PlantNews() {
                 source: "Ethnobotany Review",
                 date: "April 15, 2023",
                 description: "Traditional remedies validated by scientific research.",
-                image: "/image/Plantnews/healing-plants.jpg",
+                image: img5,
                 content: "Plants like turmeric and echinacea are being studied for pharmacological properties. Clinical trials confirm many traditional uses while discovering new applications. Researchers emphasize the importance of preserving indigenous knowledge.",
-                url: "#"
+                url: "https://www.who.int/news-room/feature-stories/detail/traditional-medicine-has-a-long-history-of-contributing-to-conventional-medicine-and-continues-to-hold-promise?utm_source=chatgpt.com"
             },
             {
                 id: 6,
@@ -76,9 +82,9 @@ export default function PlantNews() {
                 source: "Horticulture Weekly",
                 date: "April 5, 2023",
                 description: "Many pandemic gardeners have maintained their new hobby.",
-                image: "/image/Plantnews/home-garden.jpg",
+                image: img6,
                 content: "Surveys show 65% of people who started gardening during lockdowns have continued. Nurseries report sustained demand for vegetable seeds and starter plants. Experts attribute this to ongoing interest in food security and mental wellbeing.",
-                url: "#"
+                url: "https://www.seedworld.com/us/2024/01/22/pandemic-still-impacting-home-garden-seed-market/?utm_source=chatgpt.com"
             }
         ];
 
@@ -114,7 +120,7 @@ export default function PlantNews() {
                         {article.image && (
                             <div className="h-48 overflow-hidden rounded-lg mb-4">
                                 <img
-                                    src={article.image}
+                                    src={article.image.src}
                                     alt={article.title}
                                     className="w-full h-full object-cover"
                                 />
@@ -152,9 +158,9 @@ export default function PlantNews() {
                             </div>
 
                             {selectedArticle.image && (
-                                <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-6">
+                                <div className="bg-gray-100 rounded-lg h-[350px] flex items-center justify-center overflow-hidden mb-6">
                                     <img
-                                        src={selectedArticle.image}
+                                        src={selectedArticle.image.src}
                                         alt={selectedArticle.title}
                                         className="w-full h-full object-cover"
                                     />
@@ -180,12 +186,9 @@ export default function PlantNews() {
                                     href={selectedArticle.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                    className="inline-flex items-center px-4 py-2 bg-[#2E8B57] text-white rounded-lg hover:bg-green-700 transition-colors font-semibold justify-center"
                                 >
-                                    Read Full Article
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" />
-                                    </svg>
+                                    Visit the website
                                 </a>
                             </div>
                         </div>

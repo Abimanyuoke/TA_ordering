@@ -10,7 +10,7 @@ import { get } from "@/lib/bridge";
 import { ButtonKeranjang } from "@/components/button";
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { IoIosArrowBack, IoIosArrowDropright, IoIosArrowForward } from 'react-icons/io';
+import { IoIosArrowDropright } from 'react-icons/io';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -58,221 +58,177 @@ const HomePage = () => {
 
 
 
-const NextArrow = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLDivElement> }) => {
+    const NextArrow = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLDivElement> }) => {
         return (
             <div
                 className="absolute -right-56 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer text-white bg-[#3CB371] h-[400px] w-[200px] text-5xl p-2 flex items-center justify-center rounded-md"
                 onClick={onClick}
             >
                 <div className='flex flex-col justify-center'>
-                    <IoIosArrowDropright className='p-1 ml-3'/>
+                    <IoIosArrowDropright className='p-1 ml-3' />
                     <p className='text-white font-semibold text-sm'>See More...</p>
                 </div>
             </div>
         );
-};
+    };
 
-const NextArrowYoutube = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLDivElement> }) => {
-    return (
-        <div
-            className="absolute -right-69 top-[107px] transform -translate-y-1/2 z-10 cursor-pointer text-white bg-[#3CB371] h-[217px] w-[250px] text-5xl p-2 flex items-center justify-center rounded-md"
-            onClick={onClick}
-        >
-            <div className='flex flex-col justify-center'>
-                <IoIosArrowDropright className='p-1 ml-3'/>
-                <p className='text-white font-semibold text-sm'>See More...</p>
+    const NextArrowYoutube = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLDivElement> }) => {
+        return (
+            <div
+                className="absolute -right-69 top-[107px] transform -translate-y-1/2 z-10 cursor-pointer text-white bg-[#3CB371] h-[217px] w-[250px] text-5xl p-2 flex items-center justify-center rounded-md"
+                onClick={onClick}
+            >
+                <div className='flex flex-col justify-center'>
+                    <IoIosArrowDropright className='p-1 ml-3' />
+                    <p className='text-white font-semibold text-sm'>See More...</p>
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    };
 
-const PrevArrow = ({ onClick }: { onClick?: React.MouseEventHandler<HTMLDivElement> }) => {
-    return (
-        <div
-            className="absolute -left-10 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer text-gray-400 text-5xl p-2"
-            onClick={onClick}>
-            <IoIosArrowBack />
-        </div>
-    );
-};
+    interface Video {
+        id: number;
+        title: string;
+        channel: string;
+        views: string;
+        timestamp: string;
+        thumbnail: string;
+    }
 
-interface Video {
-    id: number;
-    title: string;
-    channel: string;
-    views: string;
-    timestamp: string;
-    thumbnail: string;
-}
+    type NewsArticle = {
+        id: string | number;
+        title: string;
+        source: string;
+        date: string;
+        description: string;
+        image?: any;
+        content: string;
+        url: string;
+    };
 
-const videos: Video[] = [
-    {
-        id: 1,
-        title: 'Never Gonna Give You Up',
-        channel: 'Rick Astley',
-        views: '1.2B views',
-        timestamp: '3 years ago',
-        thumbnail: 'https://www.youtube.com/embed/eXti7Z5S4TQ'
-    },
-    {
-        id: 2,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/NaQfp48stwc'
-    },
-    {
-        id: 3,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/hLxmGAFebxM'
-    },
-    {
-        id: 4,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/EH84EAq4IaA'
-    },
-    {
-        id: 5,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/X9gktB2gMEE'
-    },
-    {
-        id: 6,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/E6cWrYKmdfw'
-    },
-    {
-        id: 7,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/AXch3-Xm2LE'
-    },
-];
+    type Plant = {
+        id: string | number;
+        attributes: {
+            name: string;
+            image?: any;
+            description?: string;
+            scientific_name?: string;
+            family?: string;
+            growing_season?: string;
+            care_tips?: string[];
+            nutritional_info?: string;
+        };
+    };
 
-
-const plantguide: Video[] = [
-    {
-        id: 1,
-        title: 'Never Gonna Give You Up',
-        channel: 'Rick Astley',
-        views: '1.2B views',
-        timestamp: '3 years ago',
-        thumbnail: 'https://www.youtube.com/embed/eXti7Z5S4TQ'
-    },
-    {
-        id: 2,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/NaQfp48stwc'
-    },
-    {
-        id: 3,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/hLxmGAFebxM'
-    },
-    {
-        id: 4,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/EH84EAq4IaA'
-    },
-    {
-        id: 5,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/X9gktB2gMEE'
-    },
-    {
-        id: 6,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/E6cWrYKmdfw'
-    },
-    {
-        id: 7,
-        title: 'Another Great Video',
-        channel: 'Cool Channel',
-        views: '500K views',
-        timestamp: '2 months ago',
-        thumbnail: 'https://www.youtube.com/embed/AXch3-Xm2LE'
-    },
-];
-
-
-const settings = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    speed: 200,
-    cssEase: "linear",
-    nextArrow: <NextArrow />,
-    responsive: [
+    const videos: Video[] = [
         {
-            breakpoint: 1024,
-            settings: { slidesToShow: 3 }
+            id: 1,
+            title: 'Never Gonna Give You Up',
+            channel: 'Rick Astley',
+            views: '1.2B views',
+            timestamp: '3 years ago',
+            thumbnail: 'https://www.youtube.com/embed/eXti7Z5S4TQ'
         },
         {
-            breakpoint: 768,
-            settings: { slidesToShow: 2 }
+            id: 2,
+            title: 'Another Great Video',
+            channel: 'Cool Channel',
+            views: '500K views',
+            timestamp: '2 months ago',
+            thumbnail: 'https://www.youtube.com/embed/NaQfp48stwc'
         },
         {
-            breakpoint: 480,
-            settings: { slidesToShow: 1 }
-        }
-    ]
-};
+            id: 3,
+            title: 'Another Great Video',
+            channel: 'Cool Channel',
+            views: '500K views',
+            timestamp: '2 months ago',
+            thumbnail: 'https://www.youtube.com/embed/hLxmGAFebxM'
+        },
+        {
+            id: 4,
+            title: 'Another Great Video',
+            channel: 'Cool Channel',
+            views: '500K views',
+            timestamp: '2 months ago',
+            thumbnail: 'https://www.youtube.com/embed/EH84EAq4IaA'
+        },
+        {
+            id: 5,
+            title: 'Another Great Video',
+            channel: 'Cool Channel',
+            views: '500K views',
+            timestamp: '2 months ago',
+            thumbnail: 'https://www.youtube.com/embed/X9gktB2gMEE'
+        },
+        {
+            id: 6,
+            title: 'Another Great Video',
+            channel: 'Cool Channel',
+            views: '500K views',
+            timestamp: '2 months ago',
+            thumbnail: 'https://www.youtube.com/embed/E6cWrYKmdfw'
+        },
+        {
+            id: 7,
+            title: 'Another Great Video',
+            channel: 'Cool Channel',
+            views: '500K views',
+            timestamp: '2 months ago',
+            thumbnail: 'https://www.youtube.com/embed/AXch3-Xm2LE'
+        },
+    ];
 
-const setting = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    cssEase: "linear",
-    nextArrow: <NextArrowYoutube />,
-    responsive: [
-        {
-            breakpoint: 1024,
-            settings: { slidesToShow: 3 }
-        },
-        {
-            breakpoint: 768,
-            settings: { slidesToShow: 2 }
-        },
-        {
-            breakpoint: 480,
-            settings: { slidesToShow: 1 }
-        }
-    ]
-};
+
+
+    const settings = {
+        dots: false,
+        infinite: true,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        speed: 200,
+        cssEase: "linear",
+        nextArrow: <NextArrow />,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: { slidesToShow: 3 }
+            },
+            {
+                breakpoint: 768,
+                settings: { slidesToShow: 2 }
+            },
+            {
+                breakpoint: 480,
+                settings: { slidesToShow: 1 }
+            }
+        ]
+    };
+
+    const setting = {
+        dots: false,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        cssEase: "linear",
+        nextArrow: <NextArrowYoutube />,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: { slidesToShow: 3 }
+            },
+            {
+                breakpoint: 768,
+                settings: { slidesToShow: 2 }
+            },
+            {
+                breakpoint: 480,
+                settings: { slidesToShow: 1 }
+            }
+        ]
+    };
 
     const getMenu = async () => {
         try {
@@ -302,7 +258,7 @@ const setting = {
                 <div className="py-16 px-6 md:px-16 lg:px-32 font-roboto absolute top-24 lg:top-32">
                     <div className="text-black lg:text-white space-y-5 md:text-center lg:text-left md:w-[670px] lg:w-[700px]">
                         <h1 className="text-2xl font-bold lg:text-3xl">
-                            Plant, Care, Be Happy! “Plantify.id” Online Platform for Positive Gardening Experience 
+                            Plant, Care, Be Happy! “Plantify.id” Online Platform for Positive Gardening Experience
                         </h1>
                         <p className="text-sm font-normal lg:text-base">
                             You're not alone on this journey. Our compassionate counselors are here to guide you.
