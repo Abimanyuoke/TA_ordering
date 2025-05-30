@@ -8,7 +8,7 @@ const app = express()
 app.use(express.json())
 
 app.get(`/`, getAllMenus)
-app.post(`/`, [ uploadFile.single("picture"), verifyAddMenu], createMenu)
+app.post(`/`, [uploadFile.single("picture"), verifyAddMenu], createMenu)
 app.put(`/:id`, [verifyToken, verifyRole(["MANAGER"]), uploadFile.single("picture"), verifyEditMenu], updateMenu)
 app.delete(`/:id`, [verifyToken, verifyRole(["MANAGER"])], deleteMenu)
 

@@ -7,7 +7,7 @@ const app = express()
 app.use(express.json())
 
 app.get(`/`, [verifyToken, verifyRole(["USER", "MANAGER"])], getAllOrders)
-app.post(`/`, [verifyToken, verifyRole(["USER"]), verifyAddOrder], createOrder)
+app.post(`/`, [verifyToken, verifyRole(['USER']), verifyAddOrder], createOrder)
 app.put(`/:id`, [verifyToken, verifyRole(["USER"]), verifyEditStatus], updateStatusOrder)
 app.delete(`/:id`, [verifyToken, verifyRole(["MANAGER"])], deleteOrder)
 

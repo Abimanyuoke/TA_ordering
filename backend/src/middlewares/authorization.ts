@@ -1,6 +1,5 @@
-import {  Request, Response, NextFunction, RequestHandler } from "express";
-import { verify } from "jsonwebtoken";
-import { SECRET } from "../global";
+import { NextFunction, Request, Response } from "express";
+import { verify} from "jsonwebtoken";
 
 interface JwtPayload {
     id: string;
@@ -9,37 +8,38 @@ interface JwtPayload {
     role: string;
 }
 
-export const verifyToken = (request: Request, response: Response, next: NextFunction): void => {
-    const token = request.headers.authorization?.split(' ')[1];
 
-    if (!token) {
-        response.status(403).json({ message: 'Access denied. No token provided.' });
-        return;
+
+export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(403).json({ message: 'Access denied. No token provided.' });
     }
 
+    const token = authHeader.split(' ')[1];
+    const SECRET = process.env.SECRET || '';
+
     try {
-        const secretKey = SECRET || "";
-        const decoded = verify(token as string, secretKey);
-        request.body.user = decoded as JwtPayload;
+        const decoded = verify(token, SECRET) as JwtPayload;
+        req.body.user = decoded;
         next();
     } catch (error) {
-        response.status(401).json({ message: 'Invalid token.' });
+        return res.status(401).json({ message: 'Invalid token.', error });
     }
 };
 
-export const verifyRole = (allowedRoles: string[]): RequestHandler => {
-    return (request: Request, response: Response, next: NextFunction): void => {
-        const user = request.body.user;
+export const verifyRole = (allowedRoles: string[]) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        const user = req.body.user;
 
         if (!user) {
-            response.status(403).json({ message: 'No user information available.' });
-            return;
+            return res.status(403).json({ message: 'No user information available.' });
         }
 
         if (!allowedRoles.includes(user.role)) {
-            response.status(403)
+            return res.status(403)
                 .json({ message: `Access denied. Requires one of the following roles: ${allowedRoles.join(', ')}` });
-            return;
         }
 
         next();

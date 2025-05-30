@@ -17,6 +17,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import Search from "./search";
+import axios from "axios";
 
 const OrderPage = () => {
     const searchParams = useSearchParams();
@@ -33,7 +34,7 @@ const OrderPage = () => {
         id: 0,
         uuid: "",
         customer: "",
-        table_number: "",
+        alamat: "",
         total_price: 0,
         payment_method: "",
         status: "NEW",
@@ -55,7 +56,7 @@ const OrderPage = () => {
             id: 0,
             uuid: "",
             customer: "",
-            table_number: "",
+            alamat: "",
             total_price: 0,
             payment_method: "",
             status: "",
@@ -130,6 +131,8 @@ const OrderPage = () => {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         const TOKEN = getCookies("token") || "";
+        document.cookie // lihat apakah token benar-benar ada di browser
+        console.log("Token:", TOKEN)
         const userId = Number(getCookies("id"));
 
         if (!userId) {
@@ -147,7 +150,7 @@ const OrderPage = () => {
 
         const payload = {
             customer: orderForm.customer,
-            table_number: orderForm.table_number,
+            alamat: orderForm.alamat,
             payment_method: orderForm.payment_method,
             status: orderForm.status,
             orderlists,
@@ -155,16 +158,18 @@ const OrderPage = () => {
         };
 
         try {
-            const response = await fetch(`${BASE_API_URL}/order`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${TOKEN}`,
-                },
-                body: JSON.stringify(payload),
-            });
+            const response = await axios.post(
+                `${BASE_API_URL}/order`,
+                payload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${TOKEN}`,
+                    },
+                }
+            );
 
-            const data = await response.json();
+            const data = response.data as { status: boolean; message: string };
             if (data.status) {
                 toast.success(data.message, { duration: 2000 });
                 setTimeout(() => {
@@ -279,7 +284,7 @@ const OrderPage = () => {
                                 {selectedOrderIds.length > 0 && (
                                     <>
                                         <InputGroupComponent id="customer" type="text" value={orderForm.customer} onChange={(val) => setOrderForm({ ...orderForm, customer: val })} required label="Customer" className="text-black" />
-                                        <InputGroupComponent id="table_number" type="text" value={orderForm.table_number} onChange={(val) => setOrderForm({ ...orderForm, table_number: val })} required label="Address" className="text-black" />
+                                        <InputGroupComponent id="table_number" type="text" value={orderForm.alamat} onChange={(val) => setOrderForm({ ...orderForm, alamat: val })} required label="Address" className="text-black" />
                                         <CardSelect value={orderForm.payment_method} onChange={(val) => setOrderForm({ ...orderForm, payment_method: val })} label="Payment Method" required options={[{ value: "CASH", label: "CASH" }, { value: "QRIS", label: "QRIS" }]} />
                                         <TextGroupComponent id="order-note" value={orderNote} onChange={(val) => setOrderNote(val)} label="Order Note" className="text-black" type="text" />
 

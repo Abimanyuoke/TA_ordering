@@ -43,33 +43,27 @@ const editDataSchema = Joi.object({
     user: Joi.optional()
 })
 
-
-export const verifyAddMenu = (request: Request, response: Response, next: NextFunction): void => {
+export const verifyAddMenu = (request: Request, response: Response, next: NextFunction) => {
     /** validate a request body and grab error if exist */
-    const { error } = addDataSchema.validate(request.body, { abortEarly: false });
+    const { error } = addDataSchema.validate(request.body, { abortEarly: false })
 
     if (error) {
         /** if there is an error, then give a response like this */
-        response.status(400).json({
+        return response.status(400).json({
             status: false,
-            message: error.details.map((it) => it.message).join(", "),
-        });
-        return;
+            message: error.details.map(it => it.message).join()
+        })
     }
+    return next()
+}
 
-    next();
-};
-
-
-
-
-export const verifyEditMenu = (request: Request, response: Response, next: NextFunction): void => {
+export const verifyEditMenu = (request: Request, response: Response, next: NextFunction) => {
     /** validate a request body and grab error if exist */
     const { error } = editDataSchema.validate(request.body, { abortEarly: false })
 
     if (error) {
         /** if there is an error, then give a response like this */
-        response.status(400).json({
+        return response.status(400).json({
             status: false,
             message: error.details.map(it => it.message).join()
         })

@@ -4,8 +4,8 @@ export const middleware = async (request: NextRequest) => {
     const token = request.cookies.get("token")?.value;
     const role = request.cookies.get("role")?.value;
 
-    console.log("Middleware running on:", request.nextUrl.pathname);
-    console.log("Token:", token, "Role:", role);
+    // console.log("Middleware running on:", request.nextUrl.pathname);
+    // console.log("Token:", token, "Role:", role);
     
     // Jika pengguna mencoba mengakses halaman root, arahkan ke login
     if (request.nextUrl.pathname === "/") {

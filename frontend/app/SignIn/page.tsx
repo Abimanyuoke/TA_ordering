@@ -28,8 +28,8 @@ export default function SignIn() {
             })
             if (data.status == true) {
                 toast.success("Login success", { duration: 2000 })
+                storeCookie("token", data.token)
                 if (data.data) {
-                    storeCookie("token", data.token)
                     storeCookie("id", data.data.id)
                     storeCookie("name", data.data.name)
                     storeCookie("role", data.data.role)

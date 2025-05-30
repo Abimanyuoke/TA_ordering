@@ -29,7 +29,7 @@ export interface IOrder {
     id: number;
     uuid: string;
     customer: string;
-    table_number: string;
+    alamat: string;
     total_price: number;
     payment_method: string;
     status: string;

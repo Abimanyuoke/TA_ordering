@@ -3,7 +3,6 @@ import cors from 'cors'
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import path from 'path'
-
 import MenuRoute from './routers/menuRoute'
 import UserRoute from './routers/userRoute'
 import OrderRoute from './routers/orderRoute'

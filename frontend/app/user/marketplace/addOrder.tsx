@@ -14,7 +14,7 @@ import Select from "@/components/select"
 const AddOrder = ({ orderLists }: { orderLists: { id: number; qty: number }[] }) => {
     const [isShow, setIsShow] = useState<boolean>(false);
     const [order, setOrder] = useState<IOrder>({
-        id: 0, uuid: ``, customer: ``, table_number: ``, total_price: 0,
+        id: 0, uuid: ``, customer: ``, alamat: ``, total_price: 0,
         payment_method: ``, status: ``, createdAt: ``, updatedAt: ``, userId: 0, orderLists: [],
     });
     
@@ -56,7 +56,7 @@ const AddOrder = ({ orderLists }: { orderLists: { id: number; qty: number }[] })
     
             const payload = {
                 customer: order.customer,
-                table_number: order.table_number,
+                table_number: order.alamat,
                 payment_method: order.payment_method,
                 status: order.status,
                 orderlists,
@@ -103,7 +103,7 @@ const AddOrder = ({ orderLists }: { orderLists: { id: number; qty: number }[] })
                 <form onSubmit={handleSubmit} ref={formRef} className="text-left">
                     <div className="p-5">
                         <InputGroupComponent id="customer" type="text" value={order.customer} onChange={(val) => setOrder({ ...order, customer: val })} required label="Customer" className="text-black" />
-                        <InputGroupComponent id="table_number" type="text" value={order.table_number} onChange={(val) => setOrder({ ...order, table_number: val })} required label="Table" className="text-black" />
+                        <InputGroupComponent id="table_number" type="text" value={order.alamat} onChange={(val) => setOrder({ ...order, alamat: val })} required label="Table" className="text-black" />
                         <Select id="payment_method" value={order.payment_method} label="Payment Method" required onChange={(val) => setOrder({ ...order, payment_method: val })} className="text-black">
                             <option value="">--- Select Payment ---</option>
                             <option value="CASH">CASH</option>
