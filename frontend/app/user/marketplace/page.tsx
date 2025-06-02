@@ -185,8 +185,12 @@ const OrderPage = () => {
     };
 
     const category = (cat: string): React.ReactNode => {
-        if (cat === "TANAMAN_HIAS") return <span className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">TANAMAN_HIAS</span>;
-        if (cat === "SNACK") return <span className="bg-indigo-100 text-indigo-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Snack</span>;
+        if (cat === "TANAMAN_HIAS") return <span className="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Tanaman Hias</span>
+        if (cat === "PUPUK_PESTISIDA") return <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Pupuk Pestisida</span>
+        if (cat === "ALAT_PERLENGKAPAN") return <span className="bg-purple-100 text-purple-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Alat Perlengkapan</span>
+        if (cat === "TANAMAN_HERBAL") return <span className="bg-teal-100 text-teal-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Tanaman Herbal</span>
+        if (cat === "BENIH_BIBIT") return <span className="bg-pink-100 text-pink-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Benih Bibit</span>;
+
         return <span className="bg-purple-100 text-purple-800 text-sm font-medium px-2.5 py-0.5 rounded-full"></span>;
     };
 
@@ -220,20 +224,20 @@ const OrderPage = () => {
                 ) : menu.length === 0 ? (
                     <AlertToko title="Informasi">No data available</AlertToko>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-4 my-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 place-items-center gap-4 my-10 p-6 ">
                         {menu.map((data) => (
-                            <div key={data.id} className="p-4 rounded-lg flex flex-col items-center text-center">
-                                <div className="bg-[#2E8B57] text-white rounded-lg overflow-hidden shadow-md flex flex-col h-[460px] w-[300px] mx-auto">
-                                    <Image width={400} height={400} src={`${BASE_IMAGE_MENU}/${data.picture}`} className="shadow-2xl object-cover bg-white w-full h-[200px] rounded-t-lg" alt="preview" unoptimized />
-                                    <div className="flex flex-col justify-between flex-1 p-4">
+                            <div key={data.id} className="p-4 rounded-lg flex flex-col items-center text-left">
+                                <div className="bg-[#2E8B57] text-white rounded-lg overflow-hidden shadow-md flex flex-col h-[450px] w-[280px] mx-auto">
+                                    <Image width={300} height={300} src={`${BASE_IMAGE_MENU}/${data.picture}`} className="shadow-2xl object-cover bg-white w-[290px] h-[220px] rounded-t-lg" alt="preview" unoptimized />
+                                    <div className="flex flex-col justify-between flex-1 p-4 ">
                                         <div className="space-y-1">
-                                            <h5 className="font-bold text-xl px-4">{data.name}</h5>
+                                            <h5 className="font-bold text-xl">{data.name}</h5>
                                             <p className="text-xs">{data.description}</p>
                                             <span className="font-bold">Rp {data.price.toLocaleString()}</span>
                                             <div className="mt-2">{category(data.category)}</div>
                                         </div>
-                                        <ButtonPrimary type="button" onClick={() => handleAddToCart(data.id)}>
-                                            Tambahkan Keranjang
+                                        <ButtonPrimary type="button" onClick={() => handleAddToCart(data.id)} className="py-3.5">
+                                            Beli Sekarang
                                         </ButtonPrimary>
                                     </div>
                                 </div>
