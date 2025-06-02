@@ -9,7 +9,7 @@ app.use(express.json())
 
 app.get(`/`, getAllMenus)
 app.post(`/`, [uploadFile.single("picture"), verifyAddMenu], createMenu)
-app.put(`/:id`, [verifyToken, verifyRole(["MANAGER"]), uploadFile.single("picture"), verifyEditMenu], updateMenu)
+app.put(`/:id`, [uploadFile.single("picture"), verifyEditMenu], updateMenu)
 app.delete(`/:id`, [verifyToken, verifyRole(["MANAGER"])], deleteMenu)
 
 export default app
