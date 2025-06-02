@@ -31,7 +31,7 @@ const CardSelect = ({ value, onChange, options, label, required }: Props) => {
                         key={option.value}
                         onClick={() => onChange(option.value)}
                         className={`flex-1 p-4 rounded-lg border text-sm font-semibold ${value === option.value
-                                ? "bg-primary text-white border-primary"
+                                ? "bg-[#2E8B57] text-white border-white"
                                 : "bg-white text-gray-700 border-gray-300"
                             } hover:shadow-md transition`}
                     >
