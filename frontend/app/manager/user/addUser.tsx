@@ -37,25 +37,29 @@ const AddUser = () => {
         try {
             e.preventDefault()
             const url = `${BASE_API_URL}/user`
-            const { name, email, password, role } = user
+            const { name, email, password, role, alamat, telephone
+                
+             } = user
             const payload = new FormData()
             payload.append("name", name || "")
             payload.append("email", email || "")
             payload.append("password", password || "")
+            payload.append("alamat", alamat || "")
+            payload.append("telephone", telephone || "")
             payload.append("role", role || "")
             if (file !== null) payload.append("profile_picture", file || "")
             const response = await post(url, payload, TOKEN);
-            const data = response as { status: boolean; message: string };
+            const data = response as { status: boolean; };
             if (data?.status) {
                 setIsShow(false)
-                toast(data?.message, { duration: 2000 })
+                toast.success(`Data has been created`, { duration: 2000 })
                 setTimeout(() => router.refresh(), 1000)
             } else {
-                toast(data?.message, { duration: 2000 })
+                toast.warning(`I dont know`, { duration: 2000 })
             }
         } catch (error) {
             console.log(error);
-            toast(`Something Wrong`, { duration: 2000 })
+            toast.error(`Something Wrong`, { duration: 2000 })
         }
     }
 
@@ -103,11 +107,19 @@ const AddUser = () => {
                             onChange={val => setUser({ ...user, password: val })}
                             required={true} label="Password" />
 
+                        <InputGroupComponent id={`alamat`} type="text" value={user.alamat}
+                            onChange={val => setUser({ ...user, alamat: val })}
+                            required={true} label="Alamat" />
+
+                        <InputGroupComponent id={`telephone`} type="text" value={user.telephone}
+                            onChange={val => setUser({ ...user, telephone: val })}
+                            required={true} label="Telephone" />
+
                         <Select id={`role`} value={user.role} label="role"
                             required={true} onChange={val => setUser({ ...user, role: val })}>
                             <option value="">--- Select Role ---</option>
                             <option value="MANAGER">MANAGER</option>
-                            <option value="CASHIER">CASHIER</option>
+                            <option value="USER">USER</option>
                         </Select>
 
                         <FileInput acceptTypes={["application/pdf", "image/png", "image/jpeg", "image/jpg"]} id="profile_picture"
