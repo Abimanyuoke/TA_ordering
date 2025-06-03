@@ -57,7 +57,7 @@ const TransaksiPage = async ({
   const orders = await getOrder(search);
 
   return (
-    <div className="mt-4 bg-slate-900 rounded-xl p-6 border-t-4 border-primary shadow-lg">
+    <div className="bg-slate-900 p-6 border-t-4 border-primary shadow-lg">
       {/* Header Section */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-white mb-2">Order Transactions</h2>

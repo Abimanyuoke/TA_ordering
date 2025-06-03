@@ -2,10 +2,9 @@
 @import "tailwindcss";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-background: var(--background);
@@ -14,17 +13,9 @@
   --color-secondary: #2E8B57;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: #ffffff;
-  }
-}
-
 body {
-  background: var(--background);
   font-family: Inter;
 }
-
 
 html {
   scroll-behavior: smooth;
