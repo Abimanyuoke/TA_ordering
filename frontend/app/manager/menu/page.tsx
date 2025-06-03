@@ -3,7 +3,7 @@ import { getCookies } from "../../../lib/server-cookies";
 import { BASE_API_URL, BASE_IMAGE_MENU } from "@/global";
 import { get } from "../../../lib/bridge";
 import { AlertInfo } from "@/components/alert";
-import Image from "next/image"
+import Image from "next/image";
 import Search from "./search";
 import AddMenu from "./addMenu";
 import EditMenu from "./editMenu";
@@ -16,105 +16,109 @@ interface ApiResponse {
 
 const getMenu = async (search: string): Promise<IMenu[]> => {
     try {
-        const TOKEN = getCookies("token")
-        const url = `${BASE_API_URL}/menu?search=${search}`
+        const TOKEN = getCookies("token");
+        const url = `${BASE_API_URL}/menu?search=${search}`;
         const response = await get(url, await TOKEN);
         const data = response.data as ApiResponse;
-        let result: IMenu[] = []
-        if (data.status) result = [...data.data]
-        return result
+        return data.status ? [...data.data] : [];
     } catch (error) {
-        console.log(error)
-        return []
+        console.error(error);
+        return [];
     }
-}
+};
+
+const category = (cat: string): React.ReactNode => {
+    const categories: Record<string, { label: string; color: string; text: string }> = {
+        TANAMAN_HIAS: { label: "Tanaman Hias", color: "bg-green-100", text: "text-green-800" },
+        PUPUK_PESTISIDA: { label: "Pupuk Pestisida", color: "bg-yellow-100", text: "text-yellow-800" },
+        ALAT_PERLENGKAPAN: { label: "Alat Perlengkapan", color: "bg-purple-100", text: "text-purple-800" },
+        TANAMAN_HERBAL: { label: "Tanaman Herbal", color: "bg-teal-100", text: "text-teal-800" },
+        BENIH_BIBIT: { label: "Benih Bibit", color: "bg-pink-100", text: "text-pink-800" }
+    };
+    const item = categories[cat];
+    if (!item) return null;
+    return (
+        <span className={`${item.color} ${item.text} text-xs font-semibold px-3 py-1 rounded-full shadow-sm`}>
+            {item.label}
+        </span>
+    );
+};
 
 const MenuPage = async ({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) => {
-    const search = searchParams.search ? searchParams.search.toString() : ``
-    const menu: IMenu[] = await getMenu(search)
-
-    const category = (cat: string): React.ReactNode => {
-        if (cat === "FOOD") {
-            return <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                Food
-            </span>
-        }
-        if (cat === "SNACK") {
-            return <span className="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">
-                Snack
-            </span>
-        }
-        return <span className="bg-purple-100 text-purple-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">
-            Drink
-        </span>
-    }
+    const search = searchParams.search?.toString() || "";
+    const menu: IMenu[] = await getMenu(search);
 
     return (
-        <div>
-            <div className="mt-2 bg-slate-900 rounded-lg p-3 border-t-4 border-t-primary shadow-md">
-                <h4 className="text-xl font-bold mb-2 text-white">Menu Data</h4>
-                <p className="text-sm text-secondary mb-4">
-                    This page displays menu data, allowing menus to view details,
-                    search, and manage menu items by adding, editing, or deleting them.
+        <div className="mt-4 p-6 bg-slate-900 rounded-xl border-t-4 border-primary shadow-lg">
+            <div className="mb-6">
+                <h2 className="text-2xl font-bold text-white mb-2">Menu Data</h2>
+                <p className="text-sm text-secondary">
+                    Manage your menus here by searching, adding, editing, or deleting items.
                 </p>
-                <div className="flex justify-between items-center mb-4">
-                    {/* Search Bar */}
-                    <div className="flex items-center w-full max-w-md flex-grow">
-                        <Search url={`/manager/menu`} search={search} />
-                    </div>
-                    {/* Add Menu Button */}
-                    <div className="ml-4">
-                        <AddMenu />
-                    </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                <div className="w-full md:w-1/2">
+                    <Search url="/manager/menu" search={search} />
                 </div>
-                {
-                    menu.length == 0 ?
-                        <AlertInfo title="informasi">
-                            No data Available
-                        </AlertInfo>
-                        :
-                        <div className="m-2">
-                            {menu.map((data, index) => (
-                                <div key={`keyPrestasi${index}`} className={`flex flex-wrap shadow m-2`}>
-                                    <div className="w-full md:w-1/12 p-2 text-white">
-                                        <small className="text-sm font-bold text-primary">Picture</small><br />
-                                        <Image width={40} height={40} src={`${BASE_IMAGE_MENU}/${data.picture}`} className="rounded-sm overflow-hidden" alt="preview" unoptimized />
-                                    </div>
-                                    <div className="w-full md:w-2/12 p-2 text-white">
-                                        <small className="text-sm font-bold text-primary">Name</small> <br />
-                                        {data.name}
-                                    </div>
-                                    <div className="w-full md:w-1/12 p-2 text-white">
-                                        <small className="text-sm font-bold text-primary">Price</small> <br />
-                                        {data.price}
-                                    </div>
-                                    <div className="w-full md:w-5/12 p-2 text-white">
-                                        <small className="text-sm font-bold text-primary">Description</small> <br />
-                                        {data.description}
-                                    </div>
-                                    <div className="w-full md:w-1/12 p-2 text-white">
-                                        <small className="text-sm font-bold text-primary">Category</small> <br />
-                                        {category(data.category)}
-                                    </div>
-                                    <div className="w-full md:w-2/12 p-2 text-white">
-                                        <small className="text-sm font-bold text-primary">Action</small><br />
-                                        <div className="flex gap-1">
-                                            <EditMenu selectedMenu={data} />
-                                            <DeleteMenu selectedMenu={data} />
-                                        </div>
+                <AddMenu />
+            </div>
+
+            {menu.length === 0 ? (
+                <AlertInfo title="Informasi">No data available</AlertInfo>
+            ) : (
+                <div className="grid grid-cols-1 gap-4">
+                    {menu.map((data, index) => (
+                        <div
+                            key={`menu-${index}`}
+                            className="bg-slate-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                        >
+                            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                                <div className="md:col-span-1 flex justify-center md:justify-start">
+                                    <Image
+                                        width={60}
+                                        height={60}
+                                        src={`${BASE_IMAGE_MENU}/${data.picture}`}
+                                        className="rounded-md object-cover"
+                                        alt="Menu Preview"
+                                        unoptimized
+                                    />
+                                </div>
+
+                                <div className="md:col-span-2">
+                                    <p className="text-xs text-primary font-bold">Name</p>
+                                    <p className="text-white">{data.name}</p>
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <p className="text-xs text-primary font-bold">Price</p>
+                                    <p className="text-white">{data.price}</p>
+                                </div>
+
+                                <div className="md:col-span-4">
+                                    <p className="text-xs text-primary font-bold">Description</p>
+                                    <p className="text-white line-clamp-2">{data.description}</p>
+                                </div>
+
+                                <div className="md:col-span-2">
+                                    <p className="text-xs text-primary font-bold">Category</p>
+                                    <div>{category(data.category)}</div>
+                                </div>
+
+                                <div className="md:col-span-2">
+                                    <p className="text-xs text-primary font-bold">Actions</p>
+                                    <div className="flex gap-2 mt-1">
+                                        <EditMenu selectedMenu={data} />
+                                        <DeleteMenu selectedMenu={data} />
                                     </div>
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                }
-
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
-    )
-}
-export default MenuPage
+    );
+};
 
-
-
-
-
+export default MenuPage;

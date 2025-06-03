@@ -70,35 +70,38 @@ export const post = async (url: string, data: string | FormData, token: string) 
     }
 }
 
-export const put = async (url: string, data: string | FormData, token: string) => {
+export const put = async (url: string, data: any, token: string) => {
     try {
-        const type: string = (typeof data == 'string') ? "application/json" : "multipart/form-data"
-        let result = await axiosInstance.put(url, data, {
+        let isFormData = data instanceof FormData;
+
+        let result = await axiosInstance.put(url, isFormData ? data : JSON.stringify(data), {
             headers: {
                 "Authorization": `Bearer ${token}` || '',
-                "Content-Type": type
+                "Content-Type": isFormData ? "multipart/form-data" : "application/json"
             }
-        })
+        });
+
         return {
             status: true,
             data: result.data
-        }
+        };
     } catch (error) {
-        const err = error as AxiosError<{ message: string, code: number }>
+        const err = error as AxiosError<{ message: string; code: number }>;
         if (err.response) {
             console.log(err.response.data.message);
             return {
                 status: false,
                 message: `${err.code}: something wrong`
-            }
+            };
         }
         console.log(err.response);
         return {
             status: false,
-            message: `Something were wrong`
-        }
+            message: `Something went wrong`
+        };
     }
-}
+};
+
 
 export const drop = async (url: string, token: string) => {
     try {

@@ -8,7 +8,7 @@ const app = express()
 app.use(express.json())
 
 app.get(`/`, [verifyToken, verifyRole(["MANAGER"])], getAllUsers)
-app.get(`/profile`, [verifyToken, verifyRole(["USER", "MANAGER"])], getUserById)
+app.get(`/:id`, [verifyToken, verifyRole(["MANAGER"])], getUserById)
 app.post(`/`, uploadFile.single("picture"), verifyAddUser, createUser)
 // app.post(`/`, [verifyToken, verifyRole(["MANAGER"]), uploadFile.single("picture"), verifyAddUser], createUser)
 app.put(`/:id`, [verifyToken, verifyRole(["USER", "MANAGER"]), uploadFile.single("picture"), verifyEditUser], updateUser)
