@@ -23,7 +23,7 @@ export default function SignIn() {
             e.preventDefault()
             const url = `${BASE_API_URL}/user/login`
             const payload = JSON.stringify({ email: email, password })
-            const { data } = await axios.post<{ status: boolean; message: string; token: string; data?: { id: string; name: string; role: string; profile_picture?: string, alamat: string, telephone: string } }>(url, payload, {
+            const { data } = await axios.post<{ status: boolean; message: string; token: string; data?: { id: string; name: string; role: string; profile_picture?: string } }>(url, payload, {
                 headers: { "Content-Type": "application/json" }
             })
             if (data.status == true) {
@@ -34,8 +34,6 @@ export default function SignIn() {
                     storeCookie("name", data.data.name)
                     storeCookie("role", data.data.role)
                     storeCookie("profile_picture", data.data.profile_picture || "")
-                    storeCookie("alamat", data.data.alamat)
-                    storeCookie("telephone", data.data.telephone)
                     let role = data.data.role
                     if (role === `MANAGER`) setTimeout(() => router.replace(`/manager/dashboard`), 1000)
                     else if (role === `USER`) setTimeout(() => router.replace(`/user/home`), 1000)
@@ -94,7 +92,7 @@ export default function SignIn() {
                                 <MdOutlineEmail className="text-xl" />
                             </div>
                             <input type="email" placeholder="Email" className="pl-10 text-[#8390A2] border border-[#2E8B57] focus:outline-none focus:ring-[#2E8B57] rounded px-3 py-2 text-sm w-full"
-                                onChange={e => setEmail(e.target.value)} id={email} />
+                                onChange={e => setEmail(e.target.value)} id={`email`} />
                         </div>
 
                         <div className="flex w-full items-center border border-[#2E8B57] rounded relative">
@@ -102,7 +100,7 @@ export default function SignIn() {
                                 <GiPadlock className="text-xl" />
                             </div>
                             <input type={showPassword ? `text` : `password`} className="pl-10 text-[#8390A2] border border-[#2E8B57] rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-[#2E8B57]" value={password}
-                                onChange={e => setPassword(e.target.value)} placeholder="Password" id={`password - industri - app`} />
+                                onChange={e => setPassword(e.target.value)} placeholder="Password" id={`password`} />
                             <div className="cursor-pointer rounded-r-md p-3 absolute right-0" onClick={() => setShowPassword(!showPassword)}>
                                 {showPassword ?
                                     <IoEyeSharp  className="text-[#8390A2] text-lg"/> :
