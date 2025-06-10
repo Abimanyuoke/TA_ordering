@@ -77,7 +77,7 @@ export default function SignUp() {
                         The issue of plant care is still often overlooked because some
                         people have limited knowledge on how to take good care of them.
                         Therefore, we invite plant lovers to jointly care for and maintain
-                        plants to grow healthy and optimally. Plantify presents an
+                        plants to grow healthy and optimally. Plantify presents an 
                         integrated solution that focuses on Education, Care, and Provision
                         of quality tools and materials to support gardening activities at
                         home.

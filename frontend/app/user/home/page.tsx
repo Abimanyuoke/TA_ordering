@@ -164,7 +164,7 @@ const HomePage = () => {
             channel: 'Rick Astley',
             views: '1.2B views',
             timestamp: '3 years ago',
-            thumbnail: 'https://www.youtube.com/embed/eXti7Z5S4TQ'
+            thumbnail: 'https://www.youtube.com/embed/NaQfp48stwc'
         },
         {
             id: 2,
