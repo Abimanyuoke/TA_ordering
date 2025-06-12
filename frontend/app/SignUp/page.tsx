@@ -1,8 +1,6 @@
 "use client"
 
 import React, { FormEvent, useState } from "react";
-import Image from "next/image";
-import iconPass from "@/public/image/icon - password.png";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { BASE_API_URL } from "@/global";
