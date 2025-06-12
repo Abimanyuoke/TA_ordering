@@ -38,9 +38,6 @@ export interface IOrder {
     userId: number;
 }
 
-
-
-
 export interface IOrderList {
     id: number;
     uuid: string;
