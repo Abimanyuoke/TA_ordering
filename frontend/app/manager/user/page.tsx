@@ -40,7 +40,6 @@ const getUser = async (search: string): Promise<IUser[]> => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            // Supaya selalu fresh; bisa diganti `revalidate: 60` atau lainnya
             cache: "no-store",
         });
 
