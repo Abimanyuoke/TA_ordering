@@ -8,21 +8,51 @@ import Search from "./search";
 import AddUser from "./addUser";
 import EditUser from "./editUser";
 import DeleteUser from "./deleteUser";
+import { cookies } from "next/headers";
 
 interface ApiResponse {
     status: boolean;
     data: IUser[];
 }
 
+// const getUser = async (search: string): Promise<IUser[]> => {
+//     try {
+//         const TOKEN = getCookies("token");
+//         const url = `${BASE_API_URL}/user?search=${search}`;
+//         const response = await get(url, await TOKEN);
+//         const data = response.data as ApiResponse;
+//         return data.status ? [...data.data] : [];
+//     } catch (error) {
+//         console.error(error);
+//         return [];
+//     }
+// };
+
 const getUser = async (search: string): Promise<IUser[]> => {
     try {
-        const TOKEN = getCookies("token");
-        const url = `${BASE_API_URL}/user?search=${search}`;
-        const response = await get(url, await TOKEN);
-        const data = response.data as ApiResponse;
-        return data.status ? [...data.data] : [];
-    } catch (error) {
-        console.error(error);
+        // ambil token langsung dari cookie di Server Component
+        const token = (await cookies()).get("token")?.value || ""; 
+        const url = `${BASE_API_URL}/user?search=${encodeURIComponent(search)}`;
+
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            // Supaya selalu fresh; bisa diganti `revalidate: 60` atau lainnya
+            cache: "no-store",
+        });
+
+        if (!res.ok) {
+            console.error(`[getUser] ${res.status} ${res.statusText}`);
+            return [];
+        }
+
+        const data: ApiResponse = await res.json();
+        return data.status ? data.data : [];
+    } catch (err) {
+        console.error("[getUser]", err);
         return [];
     }
 };
