@@ -1,4 +1,3 @@
-import Footer from "@/components/footer"
 import FooterLogin from "@/components/footerLogin"
 import NavbarLogin from "@/components/navbarLogin"
 import React from "react"
