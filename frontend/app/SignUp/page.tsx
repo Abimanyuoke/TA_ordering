@@ -75,7 +75,7 @@ export default function SignUp() {
                         The issue of plant care is still often overlooked because some
                         people have limited knowledge on how to take good care of them.
                         Therefore, we invite plant lovers to jointly care for and maintain
-                        plants to grow healthy and optimally. Plantify presents an 
+                        plants to grow healthy and optimally. Plantify presents an
                         integrated solution that focuses on Education, Care, and Provision
                         of quality tools and materials to support gardening activities at
                         home.
@@ -127,7 +127,6 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex items-center gap-2">
-
                             <div className="relative flex w-full items-center">
                                 <div className="p-3 top-[26px] absolute text-[#8390A2]">
                                     <SiGooglemaps className=" text-lg" />
@@ -145,7 +144,6 @@ export default function SignUp() {
                                     onChange={val => setUser({ ...user, telephone: val })}
                                     required={true} label="Telephone" placeholder="+62xxx" className="pl-9" />
                             </div>
-
                         </div>
 
 
